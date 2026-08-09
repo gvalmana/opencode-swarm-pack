@@ -1,10 +1,10 @@
 # Architecture
 
-OpenCode Swarm Pack adapts SwarmForge concepts to OpenCode without copying the tmux daemon model.
+OpenCode Swarm Teams adapts SwarmForge concepts to OpenCode without copying the tmux daemon model.
 
 ## Mapping From SwarmForge
 
-| SwarmForge | OpenCode Swarm Pack |
+| SwarmForge | OpenCode Swarm Teams |
 |---|---|
 | `swarmforge.conf` | OpenCode command files |
 | `roles/*.prompt` | OpenCode agent files |
@@ -27,29 +27,29 @@ user -> swarm command -> orchestrator -> worktree add -> subagent -> handoff -> 
 
 OpenCode agents define behavior. OpenCode commands define entrypoints.
 
-`/swarm-two` is not the team itself. It is the user-facing shortcut that starts the workflow with the right orchestrator and pack instructions.
+`/swarm-delivery` is not the team itself. It is the user-facing shortcut that starts the workflow with the right orchestrator and team instructions.
 
 The command invokes `swarm-orchestrator`. The orchestrator then delegates to `swarm-coder` and `swarm-cleaner`.
 
 Without a command, the user would need to manually select or prompt the orchestrator every time and remember the exact workflow rules. The command makes the workflow repeatable:
 
 - It selects the correct primary agent.
-- It passes the user's request into the pack template.
+- It passes the user's request into the team template.
 - It fixes the intended flow: `coder -> cleaner -> final`.
-- It keeps the invocation short: `/swarm-two <task>`.
+- It keeps the invocation short: `/swarm-delivery <task>`.
 
 The agents remain the actual workers. The command is only the front door.
 
-## Two-Pack Flow Diagram
+## Delivery Team Flow Diagram
 
 ```text
 ┌────────────┐
 │   User     │
 └─────┬──────┘
-      │ /swarm-two <task>
+      │ /swarm-delivery <task>
       ▼
 ┌────────────────────┐
-│ swarm-two command  │
+│ swarm-delivery command │
 │ entrypoint only    │
 └─────┬──────────────┘
       │ starts selected agent
@@ -102,7 +102,7 @@ The agents remain the actual workers. The command is only the front door.
 
 ```mermaid
 flowchart TD
-    U[User] --> C["/swarm-two command"]
+    U[User] --> C["/swarm-delivery command"]
     C --> O[swarm-orchestrator main worktree]
     O -->|git worktree add coder| WT1[".worktrees/swarm-coder/<task-id>"]
     WT1 --> CODER[swarm-coder]
@@ -119,16 +119,16 @@ flowchart TD
     S --> U
 ```
 
-## Adversaries Flow Diagram
+## Review Team Flow Diagram
 
 ```text
 ┌────────────┐
 │   User     │
 └─────┬──────┘
-      │ /swarm-adversaries <task>
+      │ /swarm-review <task>
       ▼
 ┌──────────────────────────┐
-│ swarm-adversaries command│
+│ swarm-review command     │
 │ entrypoint only          │
 └─────┬────────────────────┘
       ▼

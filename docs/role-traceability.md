@@ -1,6 +1,6 @@
 # Role Traceability
 
-OpenCode Swarm Pack keeps role names traceable to SwarmForge while adding a `swarm-` prefix to avoid collisions with existing OpenCode agents. Each role prompt mirrors the SwarmForge source prompt and adapts it to OpenCode's tool model.
+OpenCode Swarm Teams keeps role names traceable to SwarmForge while adding a `swarm-` prefix to avoid collisions with existing OpenCode agents. Each role prompt mirrors the SwarmForge source prompt and adapts it to OpenCode's tool model.
 
 ## Adaptation Philosophy
 
@@ -21,38 +21,46 @@ The adaptation rule for every role is:
 
 | OpenCode Role | SwarmForge Source | Status |
 |---|---|---|
-| `swarm-orchestrator` | OpenCode adaptation of pack coordination | implemented |
-| `swarm-coder` | `two-pack/coder`, `four-pack/coder`, `six-pack/coder`, `adversaries/coder` | implemented (two-pack, four-pack, six-pack, adversaries share the same prompt) |
-| `swarm-cleaner` | `two-pack/cleaner`, `six-pack/cleaner` | implemented (two-pack, six-pack) |
-| `swarm-reviewer` | `adversaries/reviewer` | implemented for adversaries |
-| `swarm-specifier` | `four-pack/specifier`, `six-pack/specifier` | implemented for four-pack and six-pack |
-| `swarm-refactorer` | `four-pack/refactorer` | implemented for four-pack |
-| `swarm-architect` | `four-pack/architect`, `six-pack/architect` | implemented for four-pack and six-pack |
-| `swarm-hardener` | `six-pack/hardender` (normalized name) | implemented for six-pack |
-| `swarm-qa` | `six-pack/QA` (normalized name) | implemented for six-pack |
+| `swarm-orchestrator` | OpenCode adaptation of team coordination | implemented |
+| `swarm-coder` | delivery, feature, assurance, and review implementation roles | implemented and reusable |
+| `swarm-cleaner` | delivery and assurance cleanup roles | implemented and reusable |
+| `swarm-reviewer` | review-team reviewer | implemented for review-team |
+| `swarm-specifier` | feature and assurance specification roles | implemented and reusable |
+| `swarm-refactorer` | feature refactorer | implemented for feature-team |
+| `swarm-architect` | feature and assurance architecture roles | implemented and reusable |
+| `swarm-hardener` | assurance hardening role | implemented for assurance-team |
+| `swarm-qa` | assurance QA role | implemented for assurance-team |
 
 `swarm-orchestrator` is an OpenCode-specific role. SwarmForge uses shell scripts, tmux, and handoff daemons for orchestration; OpenCode needs a prompt-level orchestrator to coordinate subagents and commits.
 
-## Planned Pack Roles (Squad)
+## Mission Team Roles
 
-| OpenCode Role | SwarmForge Source | Planned Pack |
+| OpenCode Role | SwarmForge Source | Team |
 |---|---|---|
-| `swarm-squad-leader` | `squad/squad-leader` | squad |
-| `swarm-analyst` | `squad/analyst` | squad |
-| `swarm-gherkin-writer` | `squad/gherkin-writer` | squad |
-| `swarm-qa-procedure-writer` | `squad/qa-procedure-writer` | squad |
-| `swarm-gherkin-reviewer` | `squad/gherkin-reviewer` | squad |
-| `swarm-qa-procedure-reviewer` | `squad/qa-procedure-reviewer` | squad |
-| `swarm-implementer` | `squad/implementer` | squad |
-| `swarm-code-reviewer` | `squad/code-reviewer` | squad |
-| `swarm-senior-implementor` | `squad/senior-implementor` | squad |
-| `swarm-merger` | `squad/merger` | squad |
+| `swarm-mission-leader` | source mission leader | mission-team |
+| `swarm-analyst` | source analyst | mission-team |
+| `swarm-gherkin-writer` | source gherkin-writer | mission-team |
+| `swarm-qa-procedure-writer` | source qa-procedure-writer | mission-team |
+| `swarm-gherkin-reviewer` | source gherkin-reviewer | mission-team |
+| `swarm-qa-procedure-reviewer` | source qa-procedure-reviewer | mission-team |
+| `swarm-mission-implementer` | source implementer | mission-team |
+| `swarm-mission-cleaner` | source cleaner | mission-team |
+| `swarm-mission-code-reviewer` | source code-reviewer | mission-team |
+| `swarm-mission-architect` | source architect | mission-team |
+| `swarm-mission-hardener` | source hardener | mission-team |
+| `swarm-mission-qa` | source qa | mission-team |
+| `swarm-mission-senior-implementor` | source senior-implementor | mission-team |
+| `swarm-merger` | source merger | mission-team |
+
+## Mission Team Naming
+
+OpenCode installs agents into a flat namespace. Mission roles that would collide with shared agents use `swarm-mission-*` names while keeping the source role's responsibility.
 
 ## Naming Notes
 
-SwarmForge `six-pack` uses `hardender`. SwarmForge `squad` uses `hardener`. OpenCode Swarm Pack normalizes this to `swarm-hardener` because it is clearer and aligns with the later `squad` branch.
+SwarmForge source workflows use `hardender` in one place and `hardener` in another. OpenCode Swarm Teams normalizes this to `swarm-hardener`.
 
-SwarmForge `six-pack` uses uppercase `QA`. OpenCode Swarm Pack normalizes this to `swarm-qa` to keep filenames lowercase and consistent.
+SwarmForge source workflows use uppercase `QA`. OpenCode Swarm Teams normalizes this to `swarm-qa` to keep filenames lowercase and consistent.
 
 ## Per-Role Differences Versus SwarmForge
 

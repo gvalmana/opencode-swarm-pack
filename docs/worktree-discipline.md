@@ -69,8 +69,8 @@ Two ways to disable worktree isolation for a session:
 1. Command flag: include `--no-worktree` in the command arguments.
 
    ```text
-   /swarm-two add a hello world CLI --no-worktree
-   /swarm-adversaries fix checkout totals --no-worktree
+   /swarm-delivery add a hello world CLI --no-worktree
+   /swarm-review fix checkout totals --no-worktree
    ```
 
 2. Environment variable: set `OPENCODE_SWARM_NO_WORKTREE=1` before the session.

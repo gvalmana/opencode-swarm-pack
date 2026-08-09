@@ -26,9 +26,9 @@ risks:
 - Use `failed` for attempted work that could not be completed.
 - Use `completed` only when role-owned work is done and verification was attempted or explicitly skipped with reason.
 
-## Two-Pack Routing
+## Delivery Team Routing
 
-For `two-pack`:
+For `delivery-team`:
 
 - `coder` normally recommends `cleaner`.
 - `cleaner` normally recommends `final`.

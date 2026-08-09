@@ -5,14 +5,14 @@ usage() {
   cat <<'USAGE'
 Usage:
   ./install.sh --self-install [--force]
-  ./install.sh --global [--pack <name>] [--force]
-  ./install.sh --local <project-path> [--pack <name>] [--force]
+  ./install.sh --global [--team <name>] [--force]
+  ./install.sh --local <project-path> [--team <name>] [--force]
 
 Options:
-  --self-install      Copy this pack to ~/.local/share and install opencode-swarm-install
+  --self-install      Copy these teams to ~/.local/share and install opencode-swarm-install
   --global            Install into ~/.config/opencode
   --local <path>      Install into <path>/.opencode
-  --pack <name>       Pack to install. Available: two-pack, adversaries, four-pack, six-pack
+  --team <name>       Team to install. Available: delivery-team, review-team, feature-team, assurance-team, mission-team
   --force             Overwrite existing installed files
   -h, --help          Show this help
 USAGE
@@ -20,7 +20,7 @@ USAGE
 
 mode=""
 local_path=""
-pack="two-pack"
+team="delivery-team"
 force="no"
 
 while [ "$#" -gt 0 ]; do
@@ -42,12 +42,12 @@ while [ "$#" -gt 0 ]; do
       local_path="$2"
       shift 2
       ;;
-    --pack)
+    --team)
       if [ "$#" -lt 2 ]; then
-        echo "ERROR: --pack requires a pack name" >&2
+        echo "ERROR: --team requires a team name" >&2
         exit 1
       fi
-      pack="$2"
+      team="$2"
       shift 2
       ;;
     --force)
@@ -69,7 +69,7 @@ done
 script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 
 self_install() {
-  share_dir="${HOME}/.local/share/opencode-swarm-pack"
+  share_dir="${HOME}/.local/share/opencode-swarm-teams"
   bin_dir="${HOME}/.local/bin"
   wrapper="$bin_dir/opencode-swarm-install"
 
@@ -97,7 +97,7 @@ exec "$share_dir/install.sh" "\$@"
 EOF
   chmod +x "$wrapper"
 
-  echo "Installed OpenCode Swarm Pack into $share_dir"
+  echo "Installed OpenCode Swarm Teams into $share_dir"
   echo "Installed CLI wrapper: $wrapper"
   echo "Use: opencode-swarm-install --local ."
   case ":${PATH}:" in
@@ -117,10 +117,10 @@ if [ "$mode" = "self-install" ]; then
   exit 0
 fi
 
-case "$pack" in
-  two-pack|adversaries|four-pack|six-pack) ;;
+case "$team" in
+  delivery-team|review-team|feature-team|assurance-team|mission-team) ;;
   *)
-    echo "ERROR: pack '$pack' is not implemented yet. Available: two-pack, adversaries, four-pack, six-pack" >&2
+    echo "ERROR: team '$team' is not implemented yet. Available: delivery-team, review-team, feature-team, assurance-team, mission-team" >&2
     exit 1
     ;;
 esac
@@ -167,34 +167,34 @@ install_dir() {
   done
 }
 
-install_pack() {
-  selected_pack="$1"
-  selected_pack_dir="$script_dir/packs/$selected_pack"
+install_team() {
+  selected_team="$1"
+  selected_team_dir="$script_dir/teams/$selected_team"
 
-  if [ ! -d "$selected_pack_dir" ]; then
-    echo "ERROR: pack directory not found: $selected_pack_dir" >&2
+  if [ ! -d "$selected_team_dir" ]; then
+    echo "ERROR: team directory not found: $selected_team_dir" >&2
     exit 1
   fi
 
-  install_dir "$selected_pack_dir/agents" "$target_dir/agents"
-  install_dir "$selected_pack_dir/commands" "$target_dir/commands"
-  install_dir "$selected_pack_dir/skills" "$target_dir/skills"
+  install_dir "$selected_team_dir/agents" "$target_dir/agents"
+  install_dir "$selected_team_dir/commands" "$target_dir/commands"
+  install_dir "$selected_team_dir/skills" "$target_dir/skills"
 }
 
-case "$pack" in
-  two-pack) ;;
-  adversaries|four-pack|six-pack)
-    install_pack "two-pack"
+case "$team" in
+  delivery-team) ;;
+  review-team|feature-team|assurance-team|mission-team)
+    install_team "delivery-team"
     ;;
 esac
 
-case "$pack" in
-  six-pack)
-    install_pack "four-pack"
+case "$team" in
+  assurance-team)
+    install_team "feature-team"
     ;;
 esac
 
-install_pack "$pack"
+install_team "$team"
 
-echo "Installed $pack into $target_dir"
+echo "Installed $team into $target_dir"
 echo "Restart OpenCode for the new agents, commands, and skills to load."

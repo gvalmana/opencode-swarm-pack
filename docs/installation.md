@@ -1,19 +1,19 @@
 # Installation
 
-The installer copies pack files into either the global OpenCode configuration or a project-local `.opencode` directory.
+The installer copies team files into either the global OpenCode configuration or a project-local `.opencode` directory.
 
 ## Recommended Self-Install
 
-Run this once from the downloaded `opencode-swarm-pack` directory:
+Run this once from the downloaded repository directory:
 
 ```sh
 ./install.sh --self-install
 ```
 
-This copies the pack to:
+This copies the team definitions to:
 
 ```text
-~/.local/share/opencode-swarm-pack/
+~/.local/share/opencode-swarm-teams/
 ```
 
 It also creates a wrapper command:
@@ -45,7 +45,7 @@ Files are copied to:
 ~/.config/opencode/skills/
 ```
 
-Use global installation when you want `/swarm-two` and installed swarm commands available in every project.
+Use global installation when you want `/swarm-delivery` and installed swarm commands available in every project.
 
 ## Local Installation
 
@@ -67,32 +67,38 @@ Use local installation when a project needs versioned prompts or project-specifi
 
 By default, the installer refuses to overwrite existing files.
 
-Use `--force` to replace files from this pack:
+Use `--force` to replace files from these teams:
 
 ```sh
 opencode-swarm-install --global --force
 opencode-swarm-install --local . --force
 ```
 
-## Pack Selection
+## Team Selection
 
-The installer installs `two-pack` by default. It also accepts explicit pack names:
+The installer installs `delivery-team` by default. It also accepts explicit team names:
 
 ```sh
-opencode-swarm-install --global --pack two-pack
-opencode-swarm-install --global --pack adversaries
+opencode-swarm-install --global --team delivery-team
+opencode-swarm-install --global --team review-team
+opencode-swarm-install --global --team feature-team
+opencode-swarm-install --global --team assurance-team
+opencode-swarm-install --global --team mission-team
 ```
 
-Implemented packs:
+Implemented teams:
 
-- `two-pack`
-- `adversaries`
+- `delivery-team`
+- `review-team`
+- `feature-team`
+- `assurance-team`
+- `mission-team`
 
-Installing `adversaries` also installs the shared `two-pack` base files because it reuses `swarm-orchestrator`, `swarm-coder`, and `opencode-swarm`.
+Installing `review-team` or `feature-team` also installs the shared `delivery-team` base files. Installing `assurance-team` installs both `delivery-team` and `feature-team` dependencies. Installing `mission-team` installs only `delivery-team` plus `mission-team`.
 
 ## Restart Required
 
-OpenCode loads agents, commands, and skills on startup. Restart OpenCode after installing or updating this pack.
+OpenCode loads agents, commands, and skills on startup. Restart OpenCode after installing or updating these teams.
 
 ## Manual Uninstall
 
@@ -102,7 +108,17 @@ Remove these files from the selected target:
 agents/swarm-orchestrator.md
 agents/swarm-coder.md
 agents/swarm-cleaner.md
-commands/swarm-two.md
-commands/swarm-adversaries.md
+agents/swarm-mission-*.md
+agents/swarm-analyst.md
+agents/swarm-gherkin-writer.md
+agents/swarm-gherkin-reviewer.md
+agents/swarm-qa-procedure-writer.md
+agents/swarm-qa-procedure-reviewer.md
+agents/swarm-merger.md
+commands/swarm-delivery.md
+commands/swarm-review.md
+commands/swarm-feature.md
+commands/swarm-assurance.md
+commands/swarm-mission.md
 skills/opencode-swarm/
 ```

@@ -1,26 +1,29 @@
 # Usage
 
-The first available command is `/swarm-two`.
+The first available command is `/swarm-delivery`.
 
-The second available command is `/swarm-adversaries`.
+The review command is `/swarm-review`.
+
+The mission command is `/swarm-mission`.
 
 Example:
 
 ```text
-/swarm-two fix the checkout total duplication bug
+/swarm-delivery fix the checkout total duplication bug
+/swarm-mission coordinate a multi-story checkout reliability initiative
 ```
 
 Other examples:
 
 ```text
-/swarm-two add validation for invoice dates
-/swarm-two refactor the tax calculation service without changing behavior
-/swarm-two fix the null customer edge case in checkout
+/swarm-delivery add validation for invoice dates
+/swarm-delivery refactor the tax calculation service without changing behavior
+/swarm-delivery fix the null customer edge case in checkout
 ```
 
 ## Hello World Example
 
-This is a minimal example for testing that the pack is installed and the two-pack flow works.
+This is a minimal example for testing that the team is installed and the delivery flow works.
 
 Create an empty project:
 
@@ -30,10 +33,10 @@ cd hello-swarm
 git init
 ```
 
-Install the pack locally from the `opencode-swarm-pack` directory:
+Install the team locally from this repository directory:
 
 ```sh
-/home/sysadmin/PROYECTOS/PRUEBAS/AgentsProyect/opencode-swarm-pack/install.sh --local .
+./install.sh --local .
 ```
 
 Restart OpenCode from the `hello-swarm` directory so it loads `.opencode/`.
@@ -41,7 +44,7 @@ Restart OpenCode from the `hello-swarm` directory so it loads `.opencode/`.
 Run:
 
 ```text
-/swarm-two create a minimal Node.js hello world CLI. It should print "Hello, world!" when running npm start, and include a simple test or verification script if appropriate.
+/swarm-delivery create a minimal Node.js hello world CLI. It should print "Hello, world!" when running npm start, and include a simple test or verification script if appropriate.
 ```
 
 Expected flow:
@@ -76,7 +79,7 @@ Possible verification command:
 npm start
 ```
 
-## Two-Pack Flow
+## Delivery Team Flow
 
 ```text
 orchestrator -> coder -> commit -> cleaner -> optional commit -> final
@@ -93,7 +96,7 @@ The orchestrator commits after each role when there are safe, role-owned changes
 The command starts the workflow. The agents do the work.
 
 ```text
-/swarm-two
+/swarm-delivery
   └── uses swarm-orchestrator
         ├── calls swarm-coder
         └── calls swarm-cleaner
@@ -101,7 +104,7 @@ The command starts the workflow. The agents do the work.
 
 Use the command when you want the complete repeatable workflow.
 
-Use an individual agent only when you intentionally want that isolated role and no pack orchestration.
+Use an individual agent only when you intentionally want that isolated role and no team orchestration.
 
 Example direct-agent intent:
 
@@ -109,16 +112,16 @@ Example direct-agent intent:
 Ask swarm-cleaner to review this diff for behavior-preserving cleanup only.
 ```
 
-Example pack intent:
+Example team intent:
 
 ```text
-/swarm-two add a hello world CLI
+/swarm-delivery add a hello world CLI
 ```
 
 Example adversarial review intent:
 
 ```text
-/swarm-adversaries add a hello world CLI and review it for edge cases
+/swarm-review add a hello world CLI and review it for edge cases
 ```
 
 ## Flow With Commits
@@ -126,7 +129,7 @@ Example adversarial review intent:
 ```text
 User
   │
-  │ /swarm-two create hello world CLI
+  │ /swarm-delivery create hello world CLI
   ▼
 swarm-orchestrator (main worktree)
   │
@@ -159,14 +162,14 @@ swarm-orchestrator (main worktree)
 Final summary to user (with worktrees_used)
 ```
 
-## Adversaries Flow
+## Review Team Flow
 
-Use `/swarm-adversaries` when you want implementation followed by critical read-only review.
+Use `/swarm-review` when you want implementation followed by critical read-only review.
 
 ```text
 User
   │
-  │ /swarm-adversaries fix checkout total duplication
+  │ /swarm-review fix checkout total duplication
   ▼
 swarm-orchestrator (main worktree)
   │
@@ -196,6 +199,16 @@ swarm-orchestrator (main worktree)
 
 The reviewer must not edit files. It returns findings and a decision only.
 
+## Mission Team Flow
+
+Use `/swarm-mission` when work needs mission-level analysis, acceptance scenarios, QA procedures, multiple quality gates, and readiness review.
+
+```text
+mission-leader -> analyst -> gherkin-writer -> gherkin-reviewer -> qa-procedure-writer -> qa-procedure-reviewer -> implementer -> cleaner -> code-reviewer -> architect -> hardener -> qa -> senior-implementor -> merger -> final
+```
+
+The mission leader coordinates the workflow through mission-specific agents named `swarm-mission-*` where their names would otherwise collide with shared agents.
+
 ## When The Flow Stops
 
 The orchestrator stops when:
@@ -214,7 +227,7 @@ The orchestrator stops when:
 
 The final response should include:
 
-- Pack used.
+- Team used.
 - Roles executed.
 - Commits created.
 - Verification commands run.

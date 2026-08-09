@@ -1,6 +1,6 @@
 # Commit Discipline
 
-OpenCode Swarm Pack uses small role-owned commits.
+OpenCode Swarm Teams uses small role-owned commits.
 
 ## Commit Owner
 

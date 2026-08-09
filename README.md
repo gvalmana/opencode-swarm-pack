@@ -1,14 +1,14 @@
-# OpenCode Swarm Pack
+# OpenCode Swarm Teams
 
-OpenCode Swarm Pack brings SwarmForge-style role workflows to OpenCode using native agents, commands, and skills.
+OpenCode Swarm Teams bring SwarmForge-style role workflows to OpenCode using native agents, commands, and skills.
 
-The first implemented workflow is `two-pack`:
+The first implemented team is `delivery-team`:
 
 ```text
 coder -> cleaner -> final
 ```
 
-Future packs are documented and reserved for incremental implementation: `adversaries`, `four-pack`, `six-pack`, and `squad`.
+All defined teams are implemented incrementally and reuse shared role agents where responsibilities match.
 
 ## Goals
 
@@ -26,13 +26,13 @@ Recommended one-time installation:
 ./install.sh --self-install
 ```
 
-This copies the pack to `~/.local/share/opencode-swarm-pack` and creates this wrapper:
+This copies the team definitions to `~/.local/share/opencode-swarm-teams` and creates this wrapper:
 
 ```text
 ~/.local/bin/opencode-swarm-install
 ```
 
-After that, install packs from any project without remembering where this repository was downloaded.
+After that, install teams from any project without remembering where this repository was downloaded.
 
 Install globally for all OpenCode projects:
 
@@ -52,7 +52,7 @@ Install locally into the current project:
 opencode-swarm-install --local .
 ```
 
-Use `--force` to replace previously installed files from this pack:
+Use `--force` to replace previously installed files from these teams:
 
 ```sh
 opencode-swarm-install --global --force
@@ -65,13 +65,13 @@ Restart OpenCode after installing. OpenCode loads agents, commands, and skills a
 After installation and restart, run:
 
 ```text
-/swarm-two implement a small validation for checkout totals
+/swarm-delivery implement a small validation for checkout totals
 ```
 
-For adversarial implementation and review, run:
+For implementation and adversarial review, run:
 
 ```text
-/swarm-adversaries implement a small validation and review it for edge cases
+/swarm-review implement a small validation and review it for edge cases
 ```
 
 The orchestrator will delegate to `swarm-coder`, inspect the result, create a role-owned commit when appropriate, then delegate to `swarm-cleaner` for behavior-preserving cleanup.
@@ -79,7 +79,7 @@ The orchestrator will delegate to `swarm-coder`, inspect the result, create a ro
 The command is only the workflow entrypoint. It starts `swarm-orchestrator`, and the orchestrator invokes the role agents.
 
 ```text
-/swarm-two -> swarm-orchestrator -> swarm-coder -> swarm-orchestrator -> swarm-cleaner -> swarm-orchestrator
+/swarm-delivery -> swarm-orchestrator -> swarm-coder -> swarm-orchestrator -> swarm-cleaner -> swarm-orchestrator
 ```
 
 ## Documentation
@@ -90,17 +90,16 @@ The command is only the workflow entrypoint. It starts `swarm-orchestrator`, and
 - `docs/handoff-protocol.md`
 - `docs/commit-discipline.md`
 - `docs/role-traceability.md`
-- `docs/packs.md`
-- `docs/future-packs.md`
+- `docs/teams.md`
+- `docs/future-teams.md`
 - `docs/troubleshooting.md`
 
-## Implemented Packs
+## Implemented Teams
 
-- `two-pack`: implemented.
-- `adversaries`: implemented.
+- `delivery-team`: coder, cleaner.
+- `review-team`: coder, reviewer.
+- `feature-team`: specifier, coder, refactorer, architect.
+- `assurance-team`: specifier, coder, cleaner, architect, hardener, QA.
+- `mission-team`: mission leader with dedicated mission agents for analysis, acceptance, QA procedure, implementation, review, hardening, QA, senior implementation, and readiness gates.
 
-## Planned Packs
-
-- `four-pack`: specifier, coder, refactorer, architect.
-- `six-pack`: specifier, coder, cleaner, architect, hardener, QA.
-- `squad`: squad leader with transient specialized agents.
+Mission installation depends on `delivery-team` for the shared skill and base orchestration assets, then installs its own mission-specific agents.

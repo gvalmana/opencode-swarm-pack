@@ -4,14 +4,14 @@
 
 Restart OpenCode. Commands are loaded at startup.
 
-Check that `swarm-two.md` exists in one of:
+Check that the expected command file exists in one of:
 
 ```text
 ~/.config/opencode/commands/
 <project>/.opencode/commands/
 ```
 
-For adversaries, check `swarm-adversaries.md` in the same command directory.
+For example, `swarm-delivery.md`, `swarm-review.md`, `swarm-feature.md`, or `swarm-assurance.md` should be in the same command directory.
 
 ## Wrapper Command Does Not Work
 
@@ -23,7 +23,7 @@ You can still run it directly:
 ~/.local/bin/opencode-swarm-install --local .
 ```
 
-Or rerun self-install from the downloaded pack:
+Or rerun self-install from the downloaded repository:
 
 ```sh
 ./install.sh --self-install --force
@@ -75,7 +75,7 @@ The orchestrator should inspect existing changes before starting. If user change
 
 ## OpenCode Config Fails After Install
 
-This pack installs agent, command, and skill files. It does not need to edit `opencode.json` for the first phase.
+These teams install agent, command, and skill files. They do not need to edit `opencode.json`.
 
 If OpenCode fails to start due to unrelated config issues, use OpenCode's config escape hatches or fix the config file, then restart.
 
