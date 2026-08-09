@@ -95,9 +95,9 @@ Acceptance criteria:
 
 ## Phase 2: Canonical Swarm Folder
 
-Portable definitions will live under `swarm/`.
+Portable definitions live under `swarm/`.
 
-Initial target structure:
+Implemented scaffold:
 
 ```text
 swarm/
@@ -106,8 +106,11 @@ swarm/
     delivery-team/
       team.json
       roles/
+        README.md
       workflows/
+        README.md
       skills/
+        README.md
 ```
 
 The canonical model should represent:
@@ -134,7 +137,7 @@ Example `team.json` shape:
 }
 ```
 
-The first canonical folder change should be documentation or scaffolding only. Do not migrate all existing teams in one step unless there is a separate migration plan.
+The current canonical delivery team is scaffold-only. Functional OpenCode assets still live under `teams/delivery-team/` until renderers can reproduce the existing behavior.
 
 ## Phase 3: Renderers
 

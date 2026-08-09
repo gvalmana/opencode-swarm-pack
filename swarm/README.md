@@ -17,3 +17,15 @@ swarm/
 ```
 
 The canonical model should avoid OpenCode-specific frontmatter such as `mode`, `permission`, and `agent`. Tool-specific metadata belongs in target adapters or renderers.
+
+`team.json` fields:
+
+- `id`: stable team identifier used by the installer.
+- `name`: human-readable team name.
+- `summary`: short description of the team.
+- `dependencies`: other canonical teams required before this team.
+- `workflows`: workflow identifiers exposed by the team.
+- `roles`: role identifiers used by the workflows.
+- `skills`: shared instruction identifiers required by the team.
+- `requiredCapabilities`: target capabilities required for native installation.
+- `status`: maturity of the canonical definition, such as `scaffold` or `active`.
