@@ -19,6 +19,8 @@ swarm-pack install --target opencode --global
 
 The target is required by design. Swarm Pack does not scan user directories or auto-detect tools; the user explicitly selects the tool to install into.
 
+If `--team` is omitted, all bundled teams are installed.
+
 The npm installer is implemented in Node and does not invoke `install.sh`.
 
 ## Legacy Self-Install
@@ -76,9 +78,10 @@ swarm-pack install --target opencode --local . --force
 
 ## Team Selection
 
-The installer installs `delivery-team` by default. It also accepts explicit team names:
+The installer installs all bundled teams by default. It also accepts explicit team names:
 
 ```sh
+swarm-pack install --target opencode --global --team all
 swarm-pack install --target opencode --global --team delivery-team
 swarm-pack install --target opencode --global --team review-team
 swarm-pack install --target opencode --global --team feature-team
@@ -88,6 +91,7 @@ swarm-pack install --target opencode --global --team mission-team
 
 Implemented teams:
 
+- `all`
 - `delivery-team`
 - `review-team`
 - `feature-team`

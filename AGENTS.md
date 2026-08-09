@@ -30,6 +30,7 @@ Gotchas:
 
 - The installer **refuses to overwrite** an existing file unless `--force` is passed or the destination is byte-identical (`cmp -s`). Edit-team work in a consumer project will need `--force`.
 - `--target` is required by design. The installer does not scan user directories or auto-detect tools.
+- Omitting `--team` installs all bundled teams. Use `--team <name>` for a specific team.
 - After install, **restart OpenCode**. Agents, commands, and skills are loaded at startup; an in-session install will not appear until restart.
 - `--team review-team` and `--team feature-team` auto-install shared `delivery-team` files; `--team assurance-team` auto-installs both `delivery-team` and `feature-team` dependencies; `--team mission-team` installs only `delivery-team` plus `mission-team`.
 - `--local <path>` resolves `<path>` with realpath semantics, so a relative path must exist; `mkdir` it first.

@@ -32,6 +32,8 @@ Install globally for all OpenCode projects:
 swarm-pack install --target opencode --global
 ```
 
+If `--team` is omitted, all bundled teams are installed.
+
 Install locally into a specific project:
 
 ```sh

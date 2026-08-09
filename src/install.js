@@ -19,13 +19,21 @@ const TEAM_DEPENDENCIES = {
 };
 
 function resolveTeams(team) {
+  if (team === "all") {
+    return AVAILABLE_TEAMS.slice();
+  }
+
   if (!AVAILABLE_TEAMS.includes(team)) {
     throw new Error(
-      `team '${team}' is not implemented yet. Available: ${AVAILABLE_TEAMS.join(", ")}`
+      `team '${team}' is not implemented yet. Available: all, ${AVAILABLE_TEAMS.join(", ")}`
     );
   }
 
   return [...TEAM_DEPENDENCIES[team], team];
+}
+
+function formatInstalledTeams(teams) {
+  return teams.join(", ");
 }
 
 function installTeam(packageRoot, target, targetDirectory, team, options) {
@@ -60,11 +68,13 @@ function install(options) {
 
   const targetDirectory = target.resolveTargetDirectory(options);
 
-  for (const team of resolveTeams(options.team)) {
+  const teams = resolveTeams(options.team);
+
+  for (const team of teams) {
     installTeam(options.packageRoot, target, targetDirectory, team, options);
   }
 
-  console.log(`Installed ${options.team} into ${targetDirectory}`);
+  console.log(`Installed teams: ${formatInstalledTeams(teams)} into ${targetDirectory}`);
   console.log(target.restartMessage);
 }
 

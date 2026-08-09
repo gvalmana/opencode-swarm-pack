@@ -21,7 +21,7 @@ Options:
   --target <name>     Required. Tool target to install into. Available: ${listTargetIds().join(", ")}
   --global            Install into the target's global configuration
   --local <path>      Install into the target's local project configuration
-  --team <name>       Team to install. Default: delivery-team
+  --team <name>       Team to install. Default: all
   --force             Overwrite existing installed files
   -h, --help          Show help`;
 }
@@ -29,7 +29,7 @@ Options:
 function parseInstallArgs(args) {
   const options = {
     target: "",
-    team: "delivery-team",
+    team: "all",
     force: false,
     mode: "",
     localPath: "",

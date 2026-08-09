@@ -14,6 +14,7 @@ swarm-pack install --target codex --global
 ## Confirmed Decisions
 
 - `--target` is required.
+- Omitting `--team` installs all bundled teams.
 - The installer does not auto-detect tools.
 - The installer does not scan user directories looking for supported tools.
 - Phase 1 prepares the multi-target architecture only.
