@@ -20,45 +20,45 @@ All defined teams are implemented incrementally and reuse shared role agents whe
 
 ## Installation
 
-Recommended one-time installation:
+Recommended npm installation:
 
 ```sh
-./install.sh --self-install
+npm install -g swarm-pack
 ```
-
-This copies the team definitions to `~/.local/share/opencode-swarm-teams` and creates this wrapper:
-
-```text
-~/.local/bin/opencode-swarm-install
-```
-
-After that, install teams from any project without remembering where this repository was downloaded.
 
 Install globally for all OpenCode projects:
 
 ```sh
-opencode-swarm-install --global
+swarm-pack install --global
 ```
 
 Install locally into a specific project:
 
 ```sh
-opencode-swarm-install --local /path/to/project
+swarm-pack install --local /path/to/project
 ```
 
 Install locally into the current project:
 
 ```sh
-opencode-swarm-install --local .
+swarm-pack install --local .
+```
+
+OpenCode is the default target for now. It can also be passed explicitly:
+
+```sh
+swarm-pack install --target opencode --local .
 ```
 
 Use `--force` to replace previously installed files from these teams:
 
 ```sh
-opencode-swarm-install --global --force
+swarm-pack install --global --force
 ```
 
 Restart OpenCode after installing. OpenCode loads agents, commands, and skills at startup.
+
+Legacy manual installation remains available with `./install.sh --self-install`.
 
 ## Usage
 

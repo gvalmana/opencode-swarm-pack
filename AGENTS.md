@@ -1,31 +1,36 @@
 # AGENTS.md
 
-This repository is a **team workflow bundle** for OpenCode, not a runnable application. It ships reusable agent, command, and skill definitions that `install.sh` copies into an OpenCode config directory. There is no build, test, lint, or typecheck step.
+This repository is a **team workflow bundle** with an npm CLI installer. It currently ships reusable OpenCode agent, command, and skill definitions that `swarm-pack install` copies into an OpenCode config directory. There is no build, lint, or typecheck step.
 
 ## Layout
 
-- `install.sh` — bash installer (the only executable).
+- `bin/swarm-pack.js` — npm CLI executable.
+- `src/` — Node installer implementation.
+- `install.sh` — legacy bash installer.
 - `teams/<team-name>/` — each team contains `agents/`, `commands/`, `skills/`.
 - `docs/` — canonical specs. Treat these as the source of truth over the README when they conflict.
 - `teams/mission-team/` — advanced workflow; reuse existing agents for equivalent implementation, review, cleanup, architecture, hardening, and QA roles.
 
 ## Installer
 
-The wrapper assumes one-time self-install has been run (`./install.sh --self-install`), which places a wrapper at `~/.local/bin/opencode-swarm-install`. After that, install from any project:
+Recommended npm installation:
 
 ```sh
-opencode-swarm-install --local .
-opencode-swarm-install --global
-opencode-swarm-install --global --team review-team
-opencode-swarm-install --local . --force   # overwrite existing files
+npm install -g swarm-pack
+swarm-pack install --local .
+swarm-pack install --global
+swarm-pack install --global --team review-team
+swarm-pack install --local . --force   # overwrite existing files
 ```
+
+The legacy installer remains available as `./install.sh --self-install`, but npm must not call it internally.
 
 Gotchas:
 
 - The installer **refuses to overwrite** an existing file unless `--force` is passed or the destination is byte-identical (`cmp -s`). Edit-team work in a consumer project will need `--force`.
 - After install, **restart OpenCode**. Agents, commands, and skills are loaded at startup; an in-session install will not appear until restart.
 - `--team review-team` and `--team feature-team` auto-install shared `delivery-team` files; `--team assurance-team` auto-installs both `delivery-team` and `feature-team` dependencies; `--team mission-team` installs only `delivery-team` plus `mission-team`.
-- `--local <path>` resolves `<path>` with `cd -P`, so a relative path must exist; `mkdir` it first.
+- `--local <path>` resolves `<path>` with realpath semantics, so a relative path must exist; `mkdir` it first.
 
 ## Team content conventions
 
@@ -55,7 +60,7 @@ Agents are reusable across teams by default. `mission-team` is the exception: it
 
 There are no automated tests. To sanity-check a team change manually:
 
-1. `./install.sh --local /tmp/scratch-project --team <team> --force` against a throwaway git repo.
+1. `node bin/swarm-pack.js install --local /tmp/scratch-project --team <team> --force` against a throwaway git repo.
 2. Confirm files appear at `/tmp/scratch-project/.opencode/{agents,commands,skills}/`.
 3. Read the installed `.md` files back and confirm YAML frontmatter parses (no stray tabs, quoted strings intact).
 4. For agents: confirm `mode` and `permission` blocks match the role's intended bash allow-list (orchestrator may `git commit`; subagents must not).
@@ -63,6 +68,6 @@ There are no automated tests. To sanity-check a team change manually:
 
 ## Do not
 
-- Do not add a `package.json`, lockfile, CI workflow, or test runner. This repo does not have one and adding one will mislead future agents into running nonexistent commands.
+- Do not add a lockfile, CI workflow, or test runner unless explicitly requested. This repo intentionally has an npm CLI package but no automated build/test pipeline.
 - Do not name mission-specific duplicates `swarm-coder`, `swarm-cleaner`, `swarm-reviewer`, `swarm-architect`, `swarm-hardener`, or `swarm-qa`; OpenCode installs agents into a flat namespace, so mission-specific duplicates use `swarm-mission-*` names.
 - Do not change `install.sh` semantics (refuses-overwrite, `--force`, `--self-install` wrapper creation) without updating `docs/installation.md` in the same change.

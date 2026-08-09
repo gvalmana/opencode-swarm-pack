@@ -2,39 +2,43 @@
 
 The installer copies team files into either the global OpenCode configuration or a project-local `.opencode` directory.
 
-## Recommended Self-Install
+## Recommended npm Installation
 
-Run this once from the downloaded repository directory:
+Install the package globally:
+
+```sh
+npm install -g swarm-pack
+```
+
+Then install from any project:
+
+```sh
+swarm-pack install --local .
+swarm-pack install --global
+```
+
+OpenCode is the default target for now. It can also be passed explicitly:
+
+```sh
+swarm-pack install --target opencode --local .
+```
+
+The npm installer is implemented in Node and does not invoke `install.sh`.
+
+## Legacy Self-Install
+
+The shell installer remains available for manual legacy usage:
 
 ```sh
 ./install.sh --self-install
 ```
 
-This copies the team definitions to:
-
-```text
-~/.local/share/opencode-swarm-teams/
-```
-
-It also creates a wrapper command:
-
-```text
-~/.local/bin/opencode-swarm-install
-```
-
-After self-installing, use `opencode-swarm-install` from any project:
-
-```sh
-opencode-swarm-install --local .
-opencode-swarm-install --global
-```
-
-If `~/.local/bin` is not in `PATH`, add it to your shell configuration or invoke the wrapper by absolute path.
+This copies the team definitions to `~/.local/share/opencode-swarm-teams/` and creates `~/.local/bin/opencode-swarm-install`.
 
 ## Global Installation
 
 ```sh
-opencode-swarm-install --global
+swarm-pack install --global
 ```
 
 Files are copied to:
@@ -50,7 +54,7 @@ Use global installation when you want `/swarm-delivery` and installed swarm comm
 ## Local Installation
 
 ```sh
-opencode-swarm-install --local /path/to/project
+swarm-pack install --local /path/to/project
 ```
 
 Files are copied to:
@@ -70,8 +74,8 @@ By default, the installer refuses to overwrite existing files.
 Use `--force` to replace files from these teams:
 
 ```sh
-opencode-swarm-install --global --force
-opencode-swarm-install --local . --force
+swarm-pack install --global --force
+swarm-pack install --local . --force
 ```
 
 ## Team Selection
@@ -79,11 +83,11 @@ opencode-swarm-install --local . --force
 The installer installs `delivery-team` by default. It also accepts explicit team names:
 
 ```sh
-opencode-swarm-install --global --team delivery-team
-opencode-swarm-install --global --team review-team
-opencode-swarm-install --global --team feature-team
-opencode-swarm-install --global --team assurance-team
-opencode-swarm-install --global --team mission-team
+swarm-pack install --global --team delivery-team
+swarm-pack install --global --team review-team
+swarm-pack install --global --team feature-team
+swarm-pack install --global --team assurance-team
+swarm-pack install --global --team mission-team
 ```
 
 Implemented teams:

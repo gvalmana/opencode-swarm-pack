@@ -13,17 +13,17 @@ Check that the expected command file exists in one of:
 
 For example, `swarm-delivery.md`, `swarm-review.md`, `swarm-feature.md`, or `swarm-assurance.md` should be in the same command directory.
 
-## Wrapper Command Does Not Work
+## Installer Command Does Not Work
 
-If `opencode-swarm-install` is not found, check whether `~/.local/bin` is in `PATH`.
+If `swarm-pack` is not found, confirm the npm package is installed globally and your npm global bin directory is in `PATH`.
 
-You can still run it directly:
+Install it with:
 
 ```sh
-~/.local/bin/opencode-swarm-install --local .
+npm install -g swarm-pack
 ```
 
-Or rerun self-install from the downloaded repository:
+The legacy self-install wrapper remains available for manual usage:
 
 ```sh
 ./install.sh --self-install --force
@@ -57,8 +57,8 @@ The installer refuses to overwrite files by default.
 Use:
 
 ```sh
-./install.sh --global --force
-./install.sh --local . --force
+swarm-pack install --global --force
+swarm-pack install --local . --force
 ```
 
 ## Verification Command Missing
