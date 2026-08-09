@@ -1,6 +1,6 @@
 # Installation
 
-The installer copies team files into either the global OpenCode configuration or a project-local `.opencode` directory.
+The installer copies or renders team files into a selected target's global or project-local configuration.
 
 ## Recommended npm Installation
 
@@ -15,6 +15,8 @@ Then install from any project:
 ```sh
 swarm-pack install --target opencode --local .
 swarm-pack install --target opencode --global
+swarm-pack install --target codex --local .
+swarm-pack install --target codex --global
 ```
 
 The target is required by design. Swarm Pack does not scan user directories or auto-detect tools; the user explicitly selects the tool to install into.
@@ -35,6 +37,8 @@ This copies the team definitions to `~/.local/share/opencode-swarm-teams/` and c
 
 ## Global Installation
 
+### OpenCode
+
 ```sh
 swarm-pack install --target opencode --global
 ```
@@ -49,7 +53,25 @@ Files are copied to:
 
 Use global installation when you want `/swarm-delivery` and installed swarm commands available in every project.
 
+### Codex
+
+```sh
+swarm-pack install --target codex --global
+```
+
+Files are rendered or copied to:
+
+```text
+~/.codex/AGENTS.md
+~/.codex/agents/*.toml
+~/.agents/skills/opencode-swarm/
+```
+
+Use global Codex installation when you want swarm custom agents and the shared skill available across projects. Codex does not install `/swarm-*` slash commands; prompt Codex to run the desired swarm workflow.
+
 ## Local Installation
+
+### OpenCode
 
 ```sh
 swarm-pack install --target opencode --local /path/to/project
@@ -65,6 +87,22 @@ Files are copied to:
 
 Use local installation when a project needs versioned prompts or project-specific swarm behavior.
 
+### Codex
+
+```sh
+swarm-pack install --target codex --local /path/to/project
+```
+
+Files are rendered or copied to:
+
+```text
+<project>/AGENTS.md
+<project>/.codex/agents/*.toml
+<project>/.agents/skills/opencode-swarm/
+```
+
+Use local Codex installation when a project needs versioned custom agents or project-specific swarm behavior. Project-local `.codex/` layers load only after the Codex project is trusted.
+
 ## Force Reinstall
 
 By default, the installer refuses to overwrite existing files.
@@ -74,6 +112,8 @@ Use `--force` to replace files from these teams:
 ```sh
 swarm-pack install --target opencode --global --force
 swarm-pack install --target opencode --local . --force
+swarm-pack install --target codex --global --force
+swarm-pack install --target codex --local . --force
 ```
 
 ## Team Selection
@@ -89,6 +129,8 @@ swarm-pack install --target opencode --global --team assurance-team
 swarm-pack install --target opencode --global --team mission-team
 ```
 
+Replace `opencode` with `codex` to install the same team selection for Codex.
+
 Implemented teams:
 
 - `all`
@@ -102,11 +144,13 @@ Installing `review-team` or `feature-team` also installs the shared `delivery-te
 
 ## Restart Required
 
-OpenCode loads agents, commands, and skills on startup. Restart OpenCode after installing or updating these teams.
+OpenCode loads agents, commands, and skills on startup. Codex loads custom agents, instructions, and skills at startup. Restart the target tool after installing or updating these teams.
 
 ## Manual Uninstall
 
 Remove these files from the selected target:
+
+OpenCode:
 
 ```text
 agents/swarm-orchestrator.md
@@ -125,4 +169,12 @@ commands/swarm-feature.md
 commands/swarm-assurance.md
 commands/swarm-mission.md
 skills/opencode-swarm/
+```
+
+Codex:
+
+```text
+AGENTS.md
+.codex/agents/swarm-*.toml
+.agents/skills/opencode-swarm/
 ```

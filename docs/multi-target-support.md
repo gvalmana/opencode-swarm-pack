@@ -17,9 +17,7 @@ swarm-pack install --target codex --global
 - Omitting `--team` installs all bundled teams.
 - The installer does not auto-detect tools.
 - The installer does not scan user directories looking for supported tools.
-- Phase 1 prepares the multi-target architecture only.
-- OpenCode remains the only functional target in Phase 1.
-- The first new target planned after Phase 1 is `codex`.
+- OpenCode and Codex are functional targets.
 - Portable definitions will live under a canonical `swarm/` folder.
 - Existing OpenCode-oriented `teams/` assets remain supported during the transition.
 - `install.sh` remains a legacy manual installer and is not invoked by npm.
@@ -53,7 +51,8 @@ Each target should expose a small common contract:
     commands: true,
     skills: true,
     permissions: true,
-    subagents: true
+    subagents: true,
+    instructions: true
   },
   resolveTargetDirectory(options) {},
   installTeam(context) {}
@@ -78,12 +77,12 @@ Implemented foundation:
 
 - `src/targets/registry.js` lists supported targets.
 - `src/install.js` resolves targets through the registry instead of importing concrete target modules.
-- `opencode` is the only supported target.
+- `opencode` was the first supported target.
 - `opencode` exposes capability metadata.
 - Existing OpenCode installation behavior is preserved.
 - `--target` remains required.
 - The canonical `swarm/` folder is documented.
-- Codex behavior is intentionally not implemented in this phase.
+- Codex behavior is implemented by a target adapter after this phase.
 
 Acceptance criteria:
 
@@ -151,36 +150,48 @@ OpenCode renderer responsibilities:
 - Generate or copy `skills/*/SKILL.md`.
 - Preserve OpenCode-specific frontmatter and permission metadata.
 
-Codex renderer responsibilities are pending research. The renderer should not be implemented until Codex's expected global and local configuration formats are documented.
+Codex renderer responsibilities:
+
+- Render OpenCode-oriented `agents/*.md` role definitions to `.codex/agents/*.toml` custom agents.
+- Generate compact Codex instructions in `AGENTS.md`.
+- Copy reusable skills to `.agents/skills/` for project installs or `~/.agents/skills/` for global installs.
+- Do not copy OpenCode commands because Codex does not use `.opencode/commands/*.md` or `/swarm-*` command files.
+- Do not install `.rules` files by default because Codex rules are experimental security policy.
 
 ## Phase 4: Codex Target
 
-Codex is the first planned target after architecture preparation.
+Codex is the first target after architecture preparation.
 
-Pending research:
+Implemented behavior:
 
-- Local configuration path.
-- Global configuration path.
-- Supported instruction files.
-- Whether Codex supports agents or role-like prompts.
-- Whether Codex supports commands or prompt shortcuts.
-- Whether Codex supports reusable skills.
-- Whether Codex supports permission metadata.
-- Whether Codex supports subagent orchestration.
+- Local custom agents: `<project>/.codex/agents/*.toml`.
+- Global custom agents: `~/.codex/agents/*.toml`.
+- Local instructions: `<project>/AGENTS.md`.
+- Global instructions: `~/.codex/AGENTS.md`.
+- Local skills: `<project>/.agents/skills/`.
+- Global skills: `~/.agents/skills/`.
+- Subagent workflows are prompt-driven through Codex custom agents.
+- Read-only review roles render with `sandbox_mode = "read-only"`.
+- Write-capable roles inherit the parent session sandbox and approval policy.
 
-Pending implementation:
+Intentional limitations:
 
-- Add `src/targets/codex.js`.
-- Register `codex` in `src/targets/registry.js`.
-- Add Codex capabilities.
-- Add Codex installation docs.
-- Add validation for unsupported team capabilities.
+- No `/swarm-*` slash commands for Codex.
+- No `.codex/config.toml` generation in the first Codex target implementation.
+- No `.codex/rules/*.rules` generation in the first Codex target implementation.
+- No automatic Codex detection; users still pass `--target codex` explicitly.
 
 Expected commands:
 
 ```sh
 swarm-pack install --target codex --local .
 swarm-pack install --target codex --global
+```
+
+After installing into Codex, invoke workflows with prompts such as:
+
+```text
+Run the swarm delivery workflow for this request. Use swarm-coder, then swarm-cleaner, and wait for each handoff before continuing.
 ```
 
 ## Optional Informational Commands

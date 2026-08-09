@@ -37,6 +37,22 @@ function installFile(source, destination, options) {
   fs.copyFileSync(source, destination);
 }
 
+function installGeneratedFile(content, destination, options) {
+  ensureDirectory(path.dirname(destination));
+
+  if (fs.existsSync(destination) && !options.force) {
+    if (fs.readFileSync(destination, "utf8") === content) {
+      return;
+    }
+
+    throw new Error(
+      `target exists with different content: ${destination}\nUse --force to overwrite.`
+    );
+  }
+
+  fs.writeFileSync(destination, content);
+}
+
 function installDirectory(sourceDir, destinationDir, options) {
   if (!isDirectory(sourceDir)) {
     return;
@@ -57,5 +73,7 @@ function installDirectory(sourceDir, destinationDir, options) {
 module.exports = {
   ensureDirectory,
   installDirectory,
+  installFile,
+  installGeneratedFile,
   isDirectory,
 };

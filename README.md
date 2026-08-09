@@ -1,6 +1,6 @@
-# OpenCode Swarm Teams
+# Swarm Pack
 
-OpenCode Swarm Teams bring SwarmForge-style role workflows to OpenCode using native agents, commands, and skills.
+Swarm Pack brings SwarmForge-style role workflows to AI coding tools using native target adapters. OpenCode and Codex are currently supported installation targets.
 
 The first implemented team is `delivery-team`:
 
@@ -12,7 +12,7 @@ All defined teams are implemented incrementally and reuse shared role agents whe
 
 ## Goals
 
-- Coordinate specialized OpenCode agents as a small engineering team.
+- Coordinate specialized agents as a small engineering team.
 - Keep changes small, role-owned, and reviewable.
 - Centralize commits in the orchestrator.
 - Support both global and project-local installation.
@@ -32,12 +32,24 @@ Install globally for all OpenCode projects:
 swarm-pack install --target opencode --global
 ```
 
+Install globally for Codex:
+
+```sh
+swarm-pack install --target codex --global
+```
+
 If `--team` is omitted, all bundled teams are installed.
 
 Install locally into a specific project:
 
 ```sh
 swarm-pack install --target opencode --local /path/to/project
+```
+
+Install locally into a Codex project:
+
+```sh
+swarm-pack install --target codex --local /path/to/project
 ```
 
 Install locally into the current project:
@@ -54,13 +66,13 @@ Use `--force` to replace previously installed files from these teams:
 swarm-pack install --target opencode --global --force
 ```
 
-Restart OpenCode after installing. OpenCode loads agents, commands, and skills at startup.
+Restart the target tool after installing. OpenCode and Codex load agents, instructions, and skills at startup.
 
 Legacy manual installation remains available with `./install.sh --self-install`.
 
 ## Usage
 
-After installation and restart, run:
+After OpenCode installation and restart, run:
 
 ```text
 /swarm-delivery implement a small validation for checkout totals
@@ -78,6 +90,12 @@ The command is only the workflow entrypoint. It starts `swarm-orchestrator`, and
 
 ```text
 /swarm-delivery -> swarm-orchestrator -> swarm-coder -> swarm-orchestrator -> swarm-cleaner -> swarm-orchestrator
+```
+
+Codex does not install `/swarm-*` commands. After Codex installation and restart, prompt Codex directly:
+
+```text
+Run the swarm delivery workflow for this request. Use swarm-coder, then swarm-cleaner, and wait for each handoff before continuing.
 ```
 
 ## Documentation

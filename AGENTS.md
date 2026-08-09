@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This repository is a **team workflow bundle** with an npm CLI installer. It currently ships reusable OpenCode agent, command, and skill definitions that `swarm-pack install` copies into an OpenCode config directory. There is no build, lint, or typecheck step.
+This repository is a **team workflow bundle** with an npm CLI installer. It currently ships reusable OpenCode agent, command, and skill definitions that `swarm-pack install` copies or renders into supported tool config directories. There is no build, lint, or typecheck step.
 
 ## Layout
 
@@ -20,6 +20,8 @@ Recommended npm installation:
 npm install -g swarm-pack
 swarm-pack install --target opencode --local .
 swarm-pack install --target opencode --global
+swarm-pack install --target codex --local .
+swarm-pack install --target codex --global
 swarm-pack install --target opencode --global --team review-team
 swarm-pack install --target opencode --local . --force   # overwrite existing files
 ```
@@ -31,7 +33,7 @@ Gotchas:
 - The installer **refuses to overwrite** an existing file unless `--force` is passed or the destination is byte-identical (`cmp -s`). Edit-team work in a consumer project will need `--force`.
 - `--target` is required by design. The installer does not scan user directories or auto-detect tools.
 - Omitting `--team` installs all bundled teams. Use `--team <name>` for a specific team.
-- After install, **restart OpenCode**. Agents, commands, and skills are loaded at startup; an in-session install will not appear until restart.
+- After install, **restart the target tool**. Agents, instructions, commands, and skills are loaded at startup; an in-session install will not appear until restart.
 - `--team review-team` and `--team feature-team` auto-install shared `delivery-team` files; `--team assurance-team` auto-installs both `delivery-team` and `feature-team` dependencies; `--team mission-team` installs only `delivery-team` plus `mission-team`.
 - `--local <path>` resolves `<path>` with realpath semantics, so a relative path must exist; `mkdir` it first.
 
@@ -46,6 +48,7 @@ When editing or adding files inside `teams/`:
 - **Commit messages include `By <role>.` on a trailing line.** This is part of the discipline contract; do not drop it.
 - **Subagents return `commit_needed: no` and never touch git state** beyond `git status` / `git diff`. Their permission blocks reflect this — keep `git commit*` and `git add*` out of allow-lists for subagents.
 - **Worktree discipline (Phase 6).** When enabled, each subagent operates only inside the worktree path the orchestrator assigns (`.worktrees/swarm-<role>/<task-id>`, branch `swarm/<role>/<task-id>`). Subagents must not run `git worktree*`, `git merge*`, `git commit*`, or `git add*` — the orchestrator owns all of that. Subagent HANDOFFs must include `worktree_path`, `branch`, and `base_sha`. Honor the opt-out: `--no-worktree` in command arguments or `OPENCODE_SWARM_NO_WORKTREE=1`. See `docs/worktree-discipline.md` for the spec.
+- **Codex target rendering.** Codex custom agents are generated from `teams/*/agents/*.md` into `.codex/agents/*.toml`; OpenCode commands are not installed for Codex. Codex skills install under `.agents/skills/` or `~/.agents/skills/`, not `.codex/skills/`. Keep generated `AGENTS.md` compact because Codex defaults to a 32 KiB project instruction budget.
 
 ## Team status
 
@@ -63,11 +66,12 @@ Agents are reusable across teams by default. `mission-team` is the exception: it
 
 There are no automated tests. To sanity-check a team change manually:
 
-1. `node bin/swarm-pack.js install --local /tmp/scratch-project --team <team> --force` against a throwaway git repo.
+1. `node bin/swarm-pack.js install --target opencode --local /tmp/scratch-project --team <team> --force` against a throwaway git repo.
 2. Confirm files appear at `/tmp/scratch-project/.opencode/{agents,commands,skills}/`.
 3. Read the installed `.md` files back and confirm YAML frontmatter parses (no stray tabs, quoted strings intact).
 4. For agents: confirm `mode` and `permission` blocks match the role's intended bash allow-list (orchestrator may `git commit`; subagents must not).
 5. After a successful `/swarm-delivery` session, run `git worktree list` and confirm only the main worktree remains. Confirm `.worktrees/` is added to `.gitignore` in the consumer project (the orchestrator suggests it but does not modify the file).
+6. For Codex, also run `node bin/swarm-pack.js install --target codex --local /tmp/scratch-project --team <team> --force` and confirm `.codex/agents/*.toml`, `.agents/skills/opencode-swarm/SKILL.md`, and `AGENTS.md` are generated.
 
 ## Do not
 

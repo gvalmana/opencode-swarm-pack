@@ -1,6 +1,7 @@
+const codex = require("./codex");
 const opencode = require("./opencode");
 
-const targets = [opencode];
+const targets = [opencode, codex];
 
 function listTargets() {
   return targets.slice();

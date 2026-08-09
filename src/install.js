@@ -43,6 +43,11 @@ function installTeam(packageRoot, target, targetDirectory, team, options) {
     throw new Error(`team directory not found: ${teamDirectory}`);
   }
 
+  if (target.installTeam) {
+    target.installTeam(packageRoot, targetDirectory, team, options);
+    return;
+  }
+
   for (const assetDirectory of target.assetDirectories) {
     installDirectory(
       path.join(teamDirectory, assetDirectory),
@@ -72,6 +77,10 @@ function install(options) {
 
   for (const team of teams) {
     installTeam(options.packageRoot, target, targetDirectory, team, options);
+  }
+
+  if (target.installInstructions) {
+    target.installInstructions(teams, options);
   }
 
   console.log(`Installed teams: ${formatInstalledTeams(teams)} into ${targetDirectory}`);
