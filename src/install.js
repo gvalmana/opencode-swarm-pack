@@ -59,6 +59,10 @@ function installTeam(packageRoot, target, targetDirectory, team, options) {
 }
 
 function install(options) {
+  if (!options.target) {
+    throw new Error(`--target is required. Available: ${Object.keys(TARGETS).join(", ")}`);
+  }
+
   if (!options.mode) {
     throw new Error("choose --global or --local <project-path>");
   }

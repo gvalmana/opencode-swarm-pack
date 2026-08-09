@@ -57,8 +57,8 @@ The installer refuses to overwrite files by default.
 Use:
 
 ```sh
-swarm-pack install --global --force
-swarm-pack install --local . --force
+swarm-pack install --target opencode --global --force
+swarm-pack install --target opencode --local . --force
 ```
 
 ## Verification Command Missing

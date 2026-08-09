@@ -36,7 +36,7 @@ git init
 Install the team locally:
 
 ```sh
-swarm-pack install --local .
+swarm-pack install --target opencode --local .
 ```
 
 Restart OpenCode from the `hello-swarm` directory so it loads `.opencode/`.

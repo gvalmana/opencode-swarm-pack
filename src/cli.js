@@ -13,11 +13,11 @@ Options:
 
 function installUsage() {
   return `Usage:
-  swarm-pack install --global [--target <name>] [--team <name>] [--force]
-  swarm-pack install --local <project-path> [--target <name>] [--team <name>] [--force]
+  swarm-pack install --target <name> --global [--team <name>] [--force]
+  swarm-pack install --target <name> --local <project-path> [--team <name>] [--force]
 
 Options:
-  --target <name>     Installation target. Default: opencode
+  --target <name>     Required. Tool target to install into. Available: opencode
   --global            Install into the target's global configuration
   --local <path>      Install into the target's local project configuration
   --team <name>       Team to install. Default: delivery-team
@@ -27,7 +27,7 @@ Options:
 
 function parseInstallArgs(args) {
   const options = {
-    target: "opencode",
+    target: "",
     team: "delivery-team",
     force: false,
     mode: "",

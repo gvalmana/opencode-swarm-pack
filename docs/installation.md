@@ -13,15 +13,11 @@ npm install -g swarm-pack
 Then install from any project:
 
 ```sh
-swarm-pack install --local .
-swarm-pack install --global
-```
-
-OpenCode is the default target for now. It can also be passed explicitly:
-
-```sh
 swarm-pack install --target opencode --local .
+swarm-pack install --target opencode --global
 ```
+
+The target is required by design. Swarm Pack does not scan user directories or auto-detect tools; the user explicitly selects the tool to install into.
 
 The npm installer is implemented in Node and does not invoke `install.sh`.
 
@@ -38,7 +34,7 @@ This copies the team definitions to `~/.local/share/opencode-swarm-teams/` and c
 ## Global Installation
 
 ```sh
-swarm-pack install --global
+swarm-pack install --target opencode --global
 ```
 
 Files are copied to:
@@ -54,7 +50,7 @@ Use global installation when you want `/swarm-delivery` and installed swarm comm
 ## Local Installation
 
 ```sh
-swarm-pack install --local /path/to/project
+swarm-pack install --target opencode --local /path/to/project
 ```
 
 Files are copied to:
@@ -74,8 +70,8 @@ By default, the installer refuses to overwrite existing files.
 Use `--force` to replace files from these teams:
 
 ```sh
-swarm-pack install --global --force
-swarm-pack install --local . --force
+swarm-pack install --target opencode --global --force
+swarm-pack install --target opencode --local . --force
 ```
 
 ## Team Selection
@@ -83,11 +79,11 @@ swarm-pack install --local . --force
 The installer installs `delivery-team` by default. It also accepts explicit team names:
 
 ```sh
-swarm-pack install --global --team delivery-team
-swarm-pack install --global --team review-team
-swarm-pack install --global --team feature-team
-swarm-pack install --global --team assurance-team
-swarm-pack install --global --team mission-team
+swarm-pack install --target opencode --global --team delivery-team
+swarm-pack install --target opencode --global --team review-team
+swarm-pack install --target opencode --global --team feature-team
+swarm-pack install --target opencode --global --team assurance-team
+swarm-pack install --target opencode --global --team mission-team
 ```
 
 Implemented teams:

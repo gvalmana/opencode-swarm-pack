@@ -29,31 +29,27 @@ npm install -g swarm-pack
 Install globally for all OpenCode projects:
 
 ```sh
-swarm-pack install --global
+swarm-pack install --target opencode --global
 ```
 
 Install locally into a specific project:
 
 ```sh
-swarm-pack install --local /path/to/project
+swarm-pack install --target opencode --local /path/to/project
 ```
 
 Install locally into the current project:
 
 ```sh
-swarm-pack install --local .
-```
-
-OpenCode is the default target for now. It can also be passed explicitly:
-
-```sh
 swarm-pack install --target opencode --local .
 ```
+
+The target is required by design so installation never scans or modifies tool directories implicitly.
 
 Use `--force` to replace previously installed files from these teams:
 
 ```sh
-swarm-pack install --global --force
+swarm-pack install --target opencode --global --force
 ```
 
 Restart OpenCode after installing. OpenCode loads agents, commands, and skills at startup.

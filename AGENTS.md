@@ -17,10 +17,10 @@ Recommended npm installation:
 
 ```sh
 npm install -g swarm-pack
-swarm-pack install --local .
-swarm-pack install --global
-swarm-pack install --global --team review-team
-swarm-pack install --local . --force   # overwrite existing files
+swarm-pack install --target opencode --local .
+swarm-pack install --target opencode --global
+swarm-pack install --target opencode --global --team review-team
+swarm-pack install --target opencode --local . --force   # overwrite existing files
 ```
 
 The legacy installer remains available as `./install.sh --self-install`, but npm must not call it internally.
@@ -28,6 +28,7 @@ The legacy installer remains available as `./install.sh --self-install`, but npm
 Gotchas:
 
 - The installer **refuses to overwrite** an existing file unless `--force` is passed or the destination is byte-identical (`cmp -s`). Edit-team work in a consumer project will need `--force`.
+- `--target` is required by design. The installer does not scan user directories or auto-detect tools.
 - After install, **restart OpenCode**. Agents, commands, and skills are loaded at startup; an in-session install will not appear until restart.
 - `--team review-team` and `--team feature-team` auto-install shared `delivery-team` files; `--team assurance-team` auto-installs both `delivery-team` and `feature-team` dependencies; `--team mission-team` installs only `delivery-team` plus `mission-team`.
 - `--local <path>` resolves `<path>` with realpath semantics, so a relative path must exist; `mkdir` it first.
