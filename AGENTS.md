@@ -7,6 +7,7 @@ This repository is a **team workflow bundle** with an npm CLI installer. It curr
 - `bin/swarm-pack.js` — npm CLI executable.
 - `src/` — Node installer implementation.
 - `install.sh` — legacy bash installer.
+- `swarm/` — planned canonical, tool-neutral swarm definitions.
 - `teams/<team-name>/` — each team contains `agents/`, `commands/`, `skills/`.
 - `docs/` — canonical specs. Treat these as the source of truth over the README when they conflict.
 - `teams/mission-team/` — advanced workflow; reuse existing agents for equivalent implementation, review, cleanup, architecture, hardening, and QA roles.

@@ -19,7 +19,15 @@ function resolveTargetDirectory(options) {
 }
 
 module.exports = {
-  name: "opencode",
+  id: "opencode",
+  displayName: "OpenCode",
+  capabilities: {
+    agents: true,
+    commands: true,
+    skills: true,
+    permissions: true,
+    subagents: true,
+  },
   assetDirectories: ["agents", "commands", "skills"],
   restartMessage: "Restart OpenCode for the new agents, commands, and skills to load.",
   resolveTargetDirectory,

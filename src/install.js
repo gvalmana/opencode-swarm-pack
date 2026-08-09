@@ -1,6 +1,6 @@
 const path = require("node:path");
 const { installDirectory, isDirectory } = require("./filesystem");
-const opencode = require("./targets/opencode");
+const { getTarget, listTargetIds } = require("./targets/registry");
 
 const AVAILABLE_TEAMS = [
   "delivery-team",
@@ -18,10 +18,6 @@ const TEAM_DEPENDENCIES = {
   "mission-team": ["delivery-team"],
 };
 
-const TARGETS = {
-  opencode,
-};
-
 function resolveTeams(team) {
   if (!AVAILABLE_TEAMS.includes(team)) {
     throw new Error(
@@ -30,16 +26,6 @@ function resolveTeams(team) {
   }
 
   return [...TEAM_DEPENDENCIES[team], team];
-}
-
-function getTarget(name) {
-  const target = TARGETS[name];
-
-  if (!target) {
-    throw new Error(`target '${name}' is not supported yet. Available: ${Object.keys(TARGETS).join(", ")}`);
-  }
-
-  return target;
 }
 
 function installTeam(packageRoot, target, targetDirectory, team, options) {
@@ -60,7 +46,7 @@ function installTeam(packageRoot, target, targetDirectory, team, options) {
 
 function install(options) {
   if (!options.target) {
-    throw new Error(`--target is required. Available: ${Object.keys(TARGETS).join(", ")}`);
+    throw new Error(`--target is required. Available: ${listTargetIds().join(", ")}`);
   }
 
   if (!options.mode) {
@@ -68,6 +54,10 @@ function install(options) {
   }
 
   const target = getTarget(options.target);
+  if (!target) {
+    throw new Error(`target '${options.target}' is not supported yet. Available: ${listTargetIds().join(", ")}`);
+  }
+
   const targetDirectory = target.resolveTargetDirectory(options);
 
   for (const team of resolveTeams(options.team)) {

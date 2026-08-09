@@ -40,6 +40,14 @@ Without a command, the user would need to manually select or prompt the orchestr
 
 The agents remain the actual workers. The command is only the front door.
 
+## Multi-Target Direction
+
+Swarm Pack is expected to support multiple AI coding tools through explicit installation targets. The installer must not auto-detect tools or scan user directories. Users select the tool with `--target`.
+
+The current OpenCode files remain the functional implementation. Future targets should use a portable canonical model under `swarm/` and target adapters that render that model into each tool's native format.
+
+See `docs/multi-target-support.md` for the roadmap and pending work.
+
 ## Delivery Team Flow Diagram
 
 ```text

@@ -87,6 +87,7 @@ The command is only the workflow entrypoint. It starts `swarm-orchestrator`, and
 - `docs/commit-discipline.md`
 - `docs/role-traceability.md`
 - `docs/teams.md`
+- `docs/multi-target-support.md`
 - `docs/future-teams.md`
 - `docs/troubleshooting.md`
 
