@@ -1,0 +1,17 @@
+{
+  "name": "swarm-pack",
+  "version": "0.1.0",
+  "description": "Reusable agent swarm workflow packs for AI coding tools.",
+  "bin": {
+    "swarm-pack": "./bin/swarm-pack.js"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "teams/",
+    "docs/",
+    "README.md",
+    "install.sh"
+  ],
+  "license": "MIT"
+}
