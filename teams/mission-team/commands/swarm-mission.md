@@ -15,7 +15,7 @@ mission-leader -> analyst -> gherkin-writer -> gherkin-reviewer -> qa-procedure-
 
 Rules:
 
-- Use the `opencode-swarm` skill.
+- Use the `swarm-pack` skill.
 - Inspect repository state before starting.
 - Clarify mission scope and approval gates before implementation.
 - Use mission-team agents for implementation, cleanup, review, architecture, hardening, QA, senior implementation, and merge readiness.

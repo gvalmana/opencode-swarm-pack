@@ -17,6 +17,8 @@ swarm-pack install --target opencode --local .
 swarm-pack install --target opencode --global
 swarm-pack install --target codex --local .
 swarm-pack install --target codex --global
+swarm-pack install --target copilot --local .
+swarm-pack install --target copilot --global
 ```
 
 The target is required by design. Swarm Pack does not scan user directories or auto-detect tools; the user explicitly selects the tool to install into.
@@ -64,10 +66,26 @@ Files are rendered or copied to:
 ```text
 ~/.codex/AGENTS.md
 ~/.codex/agents/*.toml
-~/.agents/skills/opencode-swarm/
+~/.agents/skills/swarm-pack/
 ```
 
 Use global Codex installation when you want swarm custom agents and the shared skill available across projects. Codex does not install `/swarm-*` slash commands; prompt Codex to run the desired swarm workflow.
+
+### GitHub Copilot
+
+```sh
+swarm-pack install --target copilot --global
+```
+
+Files are rendered or copied to:
+
+```text
+~/.copilot/copilot-instructions.md
+~/.copilot/agents/*.agent.md
+~/.agents/skills/swarm-pack/
+```
+
+Use global Copilot installation when you want swarm custom agents and the shared skill available across projects. Copilot does not install `/swarm-*` slash command files; use `/agent`, explicit prompts, or `/fleet` where safe.
 
 ## Local Installation
 
@@ -98,10 +116,26 @@ Files are rendered or copied to:
 ```text
 <project>/AGENTS.md
 <project>/.codex/agents/*.toml
-<project>/.agents/skills/opencode-swarm/
+<project>/.agents/skills/swarm-pack/
 ```
 
 Use local Codex installation when a project needs versioned custom agents or project-specific swarm behavior. Project-local `.codex/` layers load only after the Codex project is trusted.
+
+### GitHub Copilot
+
+```sh
+swarm-pack install --target copilot --local /path/to/project
+```
+
+Files are rendered or copied to:
+
+```text
+<project>/.github/copilot-instructions.md
+<project>/.github/agents/*.agent.md
+<project>/.agents/skills/swarm-pack/
+```
+
+Use local Copilot installation when a project needs versioned custom agents or project-specific swarm behavior.
 
 ## Force Reinstall
 
@@ -114,6 +148,8 @@ swarm-pack install --target opencode --global --force
 swarm-pack install --target opencode --local . --force
 swarm-pack install --target codex --global --force
 swarm-pack install --target codex --local . --force
+swarm-pack install --target copilot --global --force
+swarm-pack install --target copilot --local . --force
 ```
 
 ## Team Selection
@@ -129,7 +165,7 @@ swarm-pack install --target opencode --global --team assurance-team
 swarm-pack install --target opencode --global --team mission-team
 ```
 
-Replace `opencode` with `codex` to install the same team selection for Codex.
+Replace `opencode` with `codex` or `copilot` to install the same team selection for another target.
 
 Implemented teams:
 
@@ -144,7 +180,7 @@ Installing `review-team` or `feature-team` also installs the shared `delivery-te
 
 ## Restart Required
 
-OpenCode loads agents, commands, and skills on startup. Codex loads custom agents, instructions, and skills at startup. Restart the target tool after installing or updating these teams.
+OpenCode loads agents, commands, and skills on startup. Codex and Copilot load custom agents, instructions, and skills at startup. Restart the target tool after installing or updating these teams.
 
 ## Manual Uninstall
 
@@ -168,7 +204,7 @@ commands/swarm-review.md
 commands/swarm-feature.md
 commands/swarm-assurance.md
 commands/swarm-mission.md
-skills/opencode-swarm/
+skills/swarm-pack/
 ```
 
 Codex:
@@ -176,5 +212,13 @@ Codex:
 ```text
 AGENTS.md
 .codex/agents/swarm-*.toml
-.agents/skills/opencode-swarm/
+.agents/skills/swarm-pack/
+```
+
+GitHub Copilot:
+
+```text
+.github/copilot-instructions.md
+.github/agents/swarm-*.agent.md
+.agents/skills/swarm-pack/
 ```

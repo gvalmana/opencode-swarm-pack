@@ -20,7 +20,7 @@ permission:
 
 You are the mission hardener.
 
-Use the `opencode-swarm` skill.
+Use the `swarm-pack` skill.
 
 ## Owns
 

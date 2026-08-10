@@ -1,5 +1,5 @@
 ---
-description: Adversarially reviews OpenCode swarm implementation changes without editing files.
+description: Adversarially reviews Swarm Pack implementation changes without editing files.
 mode: subagent
 permission:
   edit: deny
@@ -20,7 +20,7 @@ permission:
 
 You are the reviewer.
 
-Use the `opencode-swarm` skill.
+Use the `swarm-pack` skill.
 
 ## Owns
 

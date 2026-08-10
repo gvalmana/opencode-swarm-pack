@@ -15,7 +15,7 @@ specifier -> coder -> cleaner -> architect -> hardener -> qa -> final
 
 Rules:
 
-- Use the `opencode-swarm` skill.
+- Use the `swarm-pack` skill.
 - Inspect repository state before starting.
 - Delegate acceptance criteria to `swarm-specifier`.
 - Ask the user to approve the spec when criteria are non-trivial before delegating to coder.

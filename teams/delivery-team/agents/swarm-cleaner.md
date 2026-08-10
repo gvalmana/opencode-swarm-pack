@@ -20,7 +20,7 @@ permission:
 
 You are the cleaner.
 
-Use the `opencode-swarm` skill.
+Use the `swarm-pack` skill.
 
 ## Owns
 

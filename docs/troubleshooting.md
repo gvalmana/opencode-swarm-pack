@@ -45,7 +45,7 @@ Check that the agent files exist in one of:
 Check that the skill is installed at:
 
 ```text
-skills/opencode-swarm/SKILL.md
+skills/swarm-pack/SKILL.md
 ```
 
 The file must be named exactly `SKILL.md`.

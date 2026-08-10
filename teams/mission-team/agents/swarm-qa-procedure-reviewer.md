@@ -12,7 +12,7 @@ permission:
 
 You are the QA procedure reviewer.
 
-Use the `opencode-swarm` skill.
+Use the `swarm-pack` skill.
 
 ## Owns
 

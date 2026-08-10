@@ -1,6 +1,6 @@
 # Swarm Pack
 
-Swarm Pack brings SwarmForge-style role workflows to AI coding tools using native target adapters. OpenCode and Codex are currently supported installation targets.
+Swarm Pack brings SwarmForge-style role workflows to AI coding tools using native target adapters. OpenCode, Codex, and GitHub Copilot are currently supported installation targets.
 
 The first implemented team is `delivery-team`:
 
@@ -38,6 +38,12 @@ Install globally for Codex:
 swarm-pack install --target codex --global
 ```
 
+Install globally for GitHub Copilot:
+
+```sh
+swarm-pack install --target copilot --global
+```
+
 If `--team` is omitted, all bundled teams are installed.
 
 Install locally into a specific project:
@@ -50,6 +56,12 @@ Install locally into a Codex project:
 
 ```sh
 swarm-pack install --target codex --local /path/to/project
+```
+
+Install locally into a GitHub Copilot project:
+
+```sh
+swarm-pack install --target copilot --local /path/to/project
 ```
 
 Install locally into the current project:
@@ -66,7 +78,7 @@ Use `--force` to replace previously installed files from these teams:
 swarm-pack install --target opencode --global --force
 ```
 
-Restart the target tool after installing. OpenCode and Codex load agents, instructions, and skills at startup.
+Restart the target tool after installing. OpenCode, Codex, and GitHub Copilot load agents, instructions, and skills at startup.
 
 Legacy manual installation remains available with `./install.sh --self-install`.
 
@@ -96,6 +108,12 @@ Codex does not install `/swarm-*` commands. After Codex installation and restart
 
 ```text
 Run the swarm delivery workflow for this request. Use swarm-coder, then swarm-cleaner, and wait for each handoff before continuing.
+```
+
+Copilot also does not install `/swarm-*` command files. After Copilot installation and restart, prompt Copilot directly:
+
+```text
+Use the swarm-coder agent, then the swarm-cleaner agent, to run the delivery-team workflow for this request. Wait for each HANDOFF before continuing.
 ```
 
 ## Documentation

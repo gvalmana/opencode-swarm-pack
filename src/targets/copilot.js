@@ -3,6 +3,11 @@ const os = require("node:os");
 const path = require("node:path");
 const { installFile, installGeneratedFile } = require("../filesystem");
 
+const COORDINATOR_ROLES = new Set([
+  "swarm-mission-leader",
+  "swarm-orchestrator",
+]);
+
 const READ_ONLY_ROLES = new Set([
   "swarm-analyst",
   "swarm-architect",
@@ -14,11 +19,7 @@ const READ_ONLY_ROLES = new Set([
   "swarm-reviewer",
 ]);
 
-function resolveTargetDirectory(options) {
-  if (options.mode === "global") {
-    return path.join(os.homedir(), ".codex");
-  }
-
+function resolveProjectPath(options) {
   if (!options.localPath) {
     throw new Error("--local requires a project path");
   }
@@ -27,15 +28,23 @@ function resolveTargetDirectory(options) {
     throw new Error(`local project path does not exist: ${options.localPath}`);
   }
 
-  return path.join(fs.realpathSync(options.localPath), ".codex");
+  return fs.realpathSync(options.localPath);
+}
+
+function resolveTargetDirectory(options) {
+  if (options.mode === "global") {
+    return path.join(os.homedir(), ".copilot");
+  }
+
+  return path.join(resolveProjectPath(options), ".github");
 }
 
 function resolveInstructionPath(options) {
   if (options.mode === "global") {
-    return path.join(os.homedir(), ".codex", "AGENTS.md");
+    return path.join(os.homedir(), ".copilot", "copilot-instructions.md");
   }
 
-  return path.join(fs.realpathSync(options.localPath), "AGENTS.md");
+  return path.join(resolveProjectPath(options), ".github", "copilot-instructions.md");
 }
 
 function resolveSkillDirectory(options) {
@@ -43,7 +52,7 @@ function resolveSkillDirectory(options) {
     return path.join(os.homedir(), ".agents", "skills");
   }
 
-  return path.join(fs.realpathSync(options.localPath), ".agents", "skills");
+  return path.join(resolveProjectPath(options), ".agents", "skills");
 }
 
 function parseAgentMarkdown(content, filePath) {
@@ -68,7 +77,7 @@ function parseAgentMarkdown(content, filePath) {
   return { description, body };
 }
 
-function tomlString(value) {
+function yamlString(value) {
   return JSON.stringify(value);
 }
 
@@ -79,34 +88,42 @@ function neutralizeOpenCodeText(value) {
     .replace(/OpenCode/g, "Swarm Pack");
 }
 
-function buildDeveloperInstructions(agentName, body) {
+function toolsForAgent(agentName) {
+  if (READ_ONLY_ROLES.has(agentName)) {
+    return ["read", "search"];
+  }
+
+  if (COORDINATOR_ROLES.has(agentName)) {
+    return ["read", "search", "edit", "execute", "agent"];
+  }
+
+  return ["read", "search", "edit", "execute"];
+}
+
+function buildAgentInstructions(agentName, body) {
   const adaptedBody = neutralizeOpenCodeText(body).replace(
     /Use the `swarm-pack` skill\./g,
-    "Use the swarm-pack skill when available; otherwise follow the embedded swarm discipline and handoff rules directly."
+    "Use the /swarm-pack skill when available; otherwise follow the embedded swarm discipline and handoff rules directly."
   );
 
   return [
-    "These instructions were adapted from the Swarm Pack role definition for Codex custom agents.",
-    "Follow Codex project guidance from AGENTS.md and preserve the fixed swarm handoff format.",
-    `You are running as ${agentName} when the parent agent delegates work to you.`,
+    "These instructions were adapted from the Swarm Pack role definition for GitHub Copilot custom agents.",
+    "Follow Copilot custom instructions and preserve the fixed swarm handoff format.",
+    `You are running as ${agentName} when Copilot delegates work to you.`,
     "",
     adaptedBody,
   ].join("\n");
 }
 
-function renderAgentToml(agentName, description, body) {
-  const lines = [
-    `name = ${tomlString(agentName)}`,
-    `description = ${tomlString(neutralizeOpenCodeText(description))}`,
-  ];
+function renderAgentMarkdown(agentName, description, body) {
+  return `---
+name: ${yamlString(agentName)}
+description: ${yamlString(neutralizeOpenCodeText(description))}
+tools: [${toolsForAgent(agentName).map(yamlString).join(", ")}]
+---
 
-  if (READ_ONLY_ROLES.has(agentName)) {
-    lines.push('sandbox_mode = "read-only"');
-  }
-
-  lines.push(`developer_instructions = ${tomlString(buildDeveloperInstructions(agentName, body))}`, "");
-
-  return lines.join("\n");
+${buildAgentInstructions(agentName, body)}
+`;
 }
 
 function installAgents(teamDirectory, targetDirectory, options) {
@@ -124,8 +141,8 @@ function installAgents(teamDirectory, targetDirectory, options) {
     const agentName = path.basename(entry.name, ".md");
     const { description, body } = parseAgentMarkdown(fs.readFileSync(source, "utf8"), source);
     installGeneratedFile(
-      renderAgentToml(agentName, description, body),
-      path.join(targetDirectory, "agents", `${agentName}.toml`),
+      renderAgentMarkdown(agentName, description, body),
+      path.join(targetDirectory, "agents", `${agentName}.agent.md`),
       options
     );
   }
@@ -161,19 +178,21 @@ function installTeam(packageRoot, targetDirectory, team, options) {
 }
 
 function renderInstructions(teams) {
-  return `# Codex Swarm Pack
+  return `# Copilot Swarm Pack
 
-This repository has Swarm Pack role agents installed for Codex.
+This repository has Swarm Pack role agents installed for GitHub Copilot.
 
 ## How To Use
 
-Ask Codex to run a swarm workflow by name and delegate to the installed custom agents. Codex does not use the OpenCode /swarm-* slash commands.
+Ask Copilot to run a swarm workflow by name and delegate to the installed custom agents. Copilot does not use the OpenCode /swarm-* slash command files.
 
 Example:
 
 \`\`\`text
-Run the swarm delivery workflow for this request. Use swarm-coder, then swarm-cleaner, and wait for each handoff before continuing.
+Use the swarm-coder agent, then the swarm-cleaner agent, to run the delivery-team workflow for this request. Wait for each HANDOFF before continuing.
 \`\`\`
+
+For parallelizable work, use /fleet only when role tasks can run safely without edit conflicts.
 
 ## Installed Teams
 
@@ -192,7 +211,7 @@ ${teams.map((team) => `- ${team}`).join("\n")}
 - Keep work in small, reviewable increments.
 - Do not broaden scope or modify unrelated files.
 - Preserve user changes and never revert unrelated work.
-- Use the swarm-pack skill when available with \`$swarm-pack\`.
+- Use the /swarm-pack skill when available.
 - Subagents must return concise handoffs using the fixed HANDOFF format.
 - Only the main coordinating agent should create commits when the user explicitly asks for commits.
 `;
@@ -203,8 +222,8 @@ function installInstructions(teams, options) {
 }
 
 module.exports = {
-  id: "codex",
-  displayName: "Codex",
+  id: "copilot",
+  displayName: "GitHub Copilot",
   capabilities: {
     agents: true,
     commands: false,
@@ -213,8 +232,9 @@ module.exports = {
     subagents: true,
     instructions: true,
     rules: false,
+    hooks: false,
   },
-  restartMessage: "Restart Codex for the new agents, instructions, and skills to load.",
+  restartMessage: "Restart Copilot CLI or reload Copilot customizations for the new agents, instructions, and skills to load.",
   installInstructions,
   installTeam,
   resolveTargetDirectory,

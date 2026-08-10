@@ -24,7 +24,7 @@ Roles:
 - `swarm-coder`: implements behavior with focused tests.
 - `swarm-cleaner`: preserves behavior while improving local quality.
 
-Difference from SwarmForge: SwarmForge loops `cleaner -> coder`; OpenCode Swarm Teams makes that return conditional to avoid unnecessary loops.
+Difference from SwarmForge: SwarmForge loops `cleaner -> coder`; Swarm Pack makes that return conditional to avoid unnecessary loops.
 
 Command:
 

@@ -20,7 +20,7 @@ permission:
 
 You are the mission senior implementor.
 
-Use the `opencode-swarm` skill.
+Use the `swarm-pack` skill.
 
 ## Owns
 

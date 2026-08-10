@@ -1,9 +1,9 @@
 ---
-name: opencode-swarm
-description: Use when running OpenCode multi-agent swarm workflows such as swarm-delivery, swarm-review, swarm-feature, swarm-assurance, or swarm-mission with small commits.
+name: swarm-pack
+description: Use when running Swarm Pack multi-agent workflows such as swarm-delivery, swarm-review, swarm-feature, swarm-assurance, or swarm-mission with small commits.
 ---
 
-# OpenCode Swarm Constitution
+# Swarm Pack Constitution
 
 ## Work Discipline
 

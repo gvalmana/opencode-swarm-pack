@@ -23,5 +23,5 @@ Command:
 
 Dependencies:
 
-- Reuses `delivery-team` base files (`swarm-orchestrator`, `swarm-coder`, `opencode-swarm` skill).
+- Reuses `delivery-team` base files (`swarm-orchestrator`, `swarm-coder`, `swarm-pack` skill).
 - Installing `feature-team` automatically installs the shared base.

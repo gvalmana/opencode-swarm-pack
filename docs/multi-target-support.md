@@ -9,6 +9,8 @@ swarm-pack install --target opencode --local .
 swarm-pack install --target opencode --global
 swarm-pack install --target codex --local .
 swarm-pack install --target codex --global
+swarm-pack install --target copilot --local .
+swarm-pack install --target copilot --global
 ```
 
 ## Confirmed Decisions
@@ -17,7 +19,7 @@ swarm-pack install --target codex --global
 - Omitting `--team` installs all bundled teams.
 - The installer does not auto-detect tools.
 - The installer does not scan user directories looking for supported tools.
-- OpenCode and Codex are functional targets.
+- OpenCode, Codex, and GitHub Copilot are functional targets.
 - Portable definitions will live under a canonical `swarm/` folder.
 - Existing OpenCode-oriented `teams/` assets remain supported during the transition.
 - `install.sh` remains a legacy manual installer and is not invoked by npm.
@@ -69,6 +71,7 @@ src/
     registry.js
     opencode.js
     codex.js
+    copilot.js
 ```
 
 ## Phase 1: Architecture Preparation
@@ -158,6 +161,15 @@ Codex renderer responsibilities:
 - Do not copy OpenCode commands because Codex does not use `.opencode/commands/*.md` or `/swarm-*` command files.
 - Do not install `.rules` files by default because Codex rules are experimental security policy.
 
+GitHub Copilot renderer responsibilities:
+
+- Render OpenCode-oriented `agents/*.md` role definitions to `.github/agents/*.agent.md` or `~/.copilot/agents/*.agent.md` custom agents.
+- Generate compact Copilot instructions in `.github/copilot-instructions.md` or `~/.copilot/copilot-instructions.md`.
+- Copy reusable skills to `.agents/skills/` for project installs or `~/.agents/skills/` for global installs.
+- Translate OpenCode permission intent to Copilot `tools` lists.
+- Do not copy OpenCode commands because Copilot does not use `.opencode/commands/*.md` or `/swarm-*` command files.
+- Do not install hooks by default because Copilot hooks are session policy and automation.
+
 ## Phase 4: Codex Target
 
 Codex is the first target after architecture preparation.
@@ -194,6 +206,43 @@ After installing into Codex, invoke workflows with prompts such as:
 Run the swarm delivery workflow for this request. Use swarm-coder, then swarm-cleaner, and wait for each handoff before continuing.
 ```
 
+## Phase 5: GitHub Copilot Target
+
+GitHub Copilot is implemented as a native Markdown target.
+
+Implemented behavior:
+
+- Local custom agents: `<project>/.github/agents/*.agent.md`.
+- Global custom agents: `~/.copilot/agents/*.agent.md`.
+- Local instructions: `<project>/.github/copilot-instructions.md`.
+- Global instructions: `~/.copilot/copilot-instructions.md`.
+- Local skills: `<project>/.agents/skills/`.
+- Global skills: `~/.agents/skills/`.
+- Subagent workflows are prompt-driven through Copilot custom agents.
+- Coordinator roles render with `tools: ["read", "search", "edit", "execute", "agent"]`.
+- Read-only and readiness-review roles render with `tools: ["read", "search"]`.
+- Write-capable roles render with `tools: ["read", "search", "edit", "execute"]`.
+
+Intentional limitations:
+
+- No `/swarm-*` slash command files for Copilot.
+- No plugin packaging in the first Copilot target implementation.
+- No hook generation in the first Copilot target implementation.
+- No automatic Copilot detection; users still pass `--target copilot` explicitly.
+
+Expected commands:
+
+```sh
+swarm-pack install --target copilot --local .
+swarm-pack install --target copilot --global
+```
+
+After installing into Copilot, invoke workflows with prompts such as:
+
+```text
+Use the swarm-coder agent, then the swarm-cleaner agent, to run the delivery-team workflow for this request. Wait for each HANDOFF before continuing.
+```
+
 ## Optional Informational Commands
 
 These commands may be added later. They should not scan user directories.
@@ -209,6 +258,7 @@ swarm-pack teams
 Supported targets:
 - opencode
 - codex
+- copilot
 ```
 
 `swarm-pack teams` should list bundled teams only.

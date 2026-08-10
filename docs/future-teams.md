@@ -65,7 +65,7 @@ Per-role worktrees isolate subagent edits while the orchestrator keeps the exist
 
 Deliverables:
 
-- `teams/delivery-team/skills/opencode-swarm/SKILL.md` — new "Worktree Discipline" section.
+- `teams/delivery-team/skills/swarm-pack/SKILL.md` — new "Worktree Discipline" section.
 - `teams/delivery-team/agents/swarm-orchestrator.md` — new "Worktree Rules" section alongside "Commit Rules"; HANDOFF expectations updated to include `worktree_path`, `branch`, `base_sha`; final response includes `worktrees_used`.
 - `teams/delivery-team/agents/swarm-coder.md` and `swarm-cleaner.md` — HANDOFF extended with worktree fields; rules forbid creating/removing/merging worktrees.
 - `teams/review-team/agents/swarm-reviewer.md` — same HANDOFF extension; read-only review still applies.

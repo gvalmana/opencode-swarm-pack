@@ -1,10 +1,10 @@
 # Architecture
 
-OpenCode Swarm Teams adapts SwarmForge concepts to OpenCode without copying the tmux daemon model.
+Swarm Pack adapts SwarmForge concepts to OpenCode without copying the tmux daemon model.
 
 ## Mapping From SwarmForge
 
-| SwarmForge | OpenCode Swarm Teams |
+| SwarmForge | Swarm Pack |
 |---|---|
 | `swarmforge.conf` | OpenCode command files |
 | `roles/*.prompt` | OpenCode agent files |
