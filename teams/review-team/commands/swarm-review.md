@@ -15,7 +15,7 @@ coder -> reviewer -> coder until approved
 
 Rules:
 
-- Use the `opencode-swarm` skill.
+- Use the `swarm-pack` skill.
 - Inspect repository state before starting.
 - Delegate implementation to `swarm-coder` in its assigned worktree.
 - Commit safe coder-owned changes (squash-merge from the coder branch) before review.

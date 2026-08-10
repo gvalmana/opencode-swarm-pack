@@ -1,0 +1,11 @@
+{
+  "id": "delivery-team",
+  "name": "Delivery Team",
+  "summary": "Implementation workflow with coder and cleaner roles.",
+  "dependencies": [],
+  "workflows": ["delivery"],
+  "roles": ["coder", "cleaner"],
+  "skills": ["swarm-discipline"],
+  "requiredCapabilities": ["agents", "commands", "skills", "subagents"],
+  "status": "scaffold"
+}

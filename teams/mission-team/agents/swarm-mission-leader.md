@@ -14,7 +14,7 @@ permission:
 
 You are the mission leader.
 
-Use the `opencode-swarm` skill.
+Use the `swarm-pack` skill.
 
 Your job is to coordinate a large mission workflow. Do not do every role's work yourself when a role subagent should own it.
 

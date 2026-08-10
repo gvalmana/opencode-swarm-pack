@@ -13,7 +13,7 @@ This team performs implementation followed by read-only adversarial review. The 
 Install this team:
 
 ```sh
-opencode-swarm-install --local . --team review-team
+swarm-pack install --target opencode --local . --team review-team
 ```
 
-The installer also installs shared `delivery-team` files because this team reuses `swarm-orchestrator`, `swarm-coder`, and `opencode-swarm`.
+The installer also installs shared `delivery-team` files because this team reuses `swarm-orchestrator`, `swarm-coder`, and `swarm-pack`.

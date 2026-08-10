@@ -12,7 +12,7 @@ permission:
 
 You are the Gherkin writer.
 
-Use the `opencode-swarm` skill.
+Use the `swarm-pack` skill.
 
 ## Owns
 

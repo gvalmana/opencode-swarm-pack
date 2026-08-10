@@ -1,6 +1,6 @@
 # Delivery Team
 
-`delivery-team` is the smallest implemented OpenCode Swarm workflow.
+`delivery-team` is the smallest implemented Swarm Pack workflow.
 
 Flow:
 

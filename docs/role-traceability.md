@@ -1,6 +1,6 @@
 # Role Traceability
 
-OpenCode Swarm Teams keeps role names traceable to SwarmForge while adding a `swarm-` prefix to avoid collisions with existing OpenCode agents. Each role prompt mirrors the SwarmForge source prompt and adapts it to OpenCode's tool model.
+Swarm Pack keeps role names traceable to SwarmForge while adding a `swarm-` prefix to avoid collisions with existing OpenCode agents. Each role prompt mirrors the SwarmForge source prompt and adapts it to OpenCode's tool model.
 
 ## Adaptation Philosophy
 
@@ -58,9 +58,9 @@ OpenCode installs agents into a flat namespace. Mission roles that would collide
 
 ## Naming Notes
 
-SwarmForge source workflows use `hardender` in one place and `hardener` in another. OpenCode Swarm Teams normalizes this to `swarm-hardener`.
+SwarmForge source workflows use `hardender` in one place and `hardener` in another. Swarm Pack normalizes this to `swarm-hardener`.
 
-SwarmForge source workflows use uppercase `QA`. OpenCode Swarm Teams normalizes this to `swarm-qa` to keep filenames lowercase and consistent.
+SwarmForge source workflows use uppercase `QA`. Swarm Pack normalizes this to `swarm-qa` to keep filenames lowercase and consistent.
 
 ## Per-Role Differences Versus SwarmForge
 
