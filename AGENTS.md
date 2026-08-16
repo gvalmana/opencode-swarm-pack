@@ -24,6 +24,8 @@ swarm-pack install --target codex --local .
 swarm-pack install --target codex --global
 swarm-pack install --target copilot --local .
 swarm-pack install --target copilot --global
+swarm-pack install --target claude --local .
+swarm-pack install --target claude --global
 swarm-pack install --target opencode --global --team review-team
 swarm-pack install --target opencode --local . --force   # overwrite existing files
 ```
@@ -52,6 +54,7 @@ When editing or adding files inside `teams/`:
 - **Worktree discipline (Phase 6).** When enabled, each subagent operates only inside the worktree path the orchestrator assigns (`.worktrees/swarm-<role>/<task-id>`, branch `swarm/<role>/<task-id>`). Subagents must not run `git worktree*`, `git merge*`, `git commit*`, or `git add*` — the orchestrator owns all of that. Subagent HANDOFFs must include `worktree_path`, `branch`, and `base_sha`. Honor the opt-out: `--no-worktree` in command arguments or `OPENCODE_SWARM_NO_WORKTREE=1`. See `docs/worktree-discipline.md` for the spec.
 - **Codex target rendering.** Codex custom agents are generated from `teams/*/agents/*.md` into `.codex/agents/*.toml`; OpenCode commands are not installed for Codex. Codex skills install under `.agents/skills/` or `~/.agents/skills/`, not `.codex/skills/`. Keep generated `AGENTS.md` compact because Codex defaults to a 32 KiB project instruction budget.
 - **Copilot target rendering.** Copilot custom agents are generated from `teams/*/agents/*.md` into `.github/agents/*.agent.md` or `~/.copilot/agents/*.agent.md`; OpenCode commands are not installed for Copilot. Copilot skills install under `.agents/skills/` or `~/.agents/skills/`. Use Copilot `tools` frontmatter to approximate role permissions.
+- **Claude Code target rendering.** Claude Code subagents are generated from `teams/*/agents/*.md` into `.claude/agents/*.md` or `~/.claude/agents/*.md`; OpenCode commands are rendered as Claude Code skills under `.claude/skills/swarm-*/SKILL.md` or `~/.claude/skills/swarm-*/SKILL.md`. Claude skills install under `.claude/skills/` or `~/.claude/skills/`. Use Claude Code `tools` and `permissionMode` frontmatter to approximate role permissions; do not enable experimental agent teams automatically.
 
 ## Team status
 
@@ -76,6 +79,7 @@ There are no automated tests. To sanity-check a team change manually:
 5. After a successful `/swarm-delivery` session, run `git worktree list` and confirm only the main worktree remains. Confirm `.worktrees/` is added to `.gitignore` in the consumer project (the orchestrator suggests it but does not modify the file).
 6. For Codex, also run `node bin/swarm-pack.js install --target codex --local /tmp/scratch-project --team <team> --force` and confirm `.codex/agents/*.toml`, `.agents/skills/swarm-pack/SKILL.md`, and `AGENTS.md` are generated.
 7. For Copilot, also run `node bin/swarm-pack.js install --target copilot --local /tmp/scratch-project --team <team> --force` and confirm `.github/agents/*.agent.md`, `.github/copilot-instructions.md`, and `.agents/skills/swarm-pack/SKILL.md` are generated.
+8. For Claude Code, also run `node bin/swarm-pack.js install --target claude --local /tmp/scratch-project --team <team> --force` and confirm `.claude/agents/*.md`, `.claude/skills/swarm-pack/SKILL.md`, `.claude/skills/swarm-*/SKILL.md`, and `CLAUDE.md` are generated.
 
 ## Do not
 

@@ -19,6 +19,8 @@ swarm-pack install --target codex --local .
 swarm-pack install --target codex --global
 swarm-pack install --target copilot --local .
 swarm-pack install --target copilot --global
+swarm-pack install --target claude --local .
+swarm-pack install --target claude --global
 ```
 
 The target is required by design. Swarm Pack does not scan user directories or auto-detect tools; the user explicitly selects the tool to install into.
@@ -87,6 +89,23 @@ Files are rendered or copied to:
 
 Use global Copilot installation when you want swarm custom agents and the shared skill available across projects. Copilot does not install `/swarm-*` slash command files; use `/agent`, explicit prompts, or `/fleet` where safe.
 
+### Claude Code
+
+```sh
+swarm-pack install --target claude --global
+```
+
+Files are rendered or copied to:
+
+```text
+~/.claude/CLAUDE.md
+~/.claude/agents/*.md
+~/.claude/skills/swarm-pack/
+~/.claude/skills/swarm-*/SKILL.md
+```
+
+Use global Claude Code installation when you want swarm subagents, shared skills, and `/swarm-*` workflow skills available across projects. Claude Code agent teams are experimental and are not enabled by the installer; when users enable `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`, teams can reuse the installed subagent definitions by name.
+
 ## Local Installation
 
 ### OpenCode
@@ -137,6 +156,23 @@ Files are rendered or copied to:
 
 Use local Copilot installation when a project needs versioned custom agents or project-specific swarm behavior.
 
+### Claude Code
+
+```sh
+swarm-pack install --target claude --local /path/to/project
+```
+
+Files are rendered or copied to:
+
+```text
+<project>/CLAUDE.md
+<project>/.claude/agents/*.md
+<project>/.claude/skills/swarm-pack/
+<project>/.claude/skills/swarm-*/SKILL.md
+```
+
+Use local Claude Code installation when a project needs versioned subagents, workflow skills, or project-specific swarm behavior.
+
 ## Force Reinstall
 
 By default, the installer refuses to overwrite existing files.
@@ -150,6 +186,8 @@ swarm-pack install --target codex --global --force
 swarm-pack install --target codex --local . --force
 swarm-pack install --target copilot --global --force
 swarm-pack install --target copilot --local . --force
+swarm-pack install --target claude --global --force
+swarm-pack install --target claude --local . --force
 ```
 
 ## Team Selection
@@ -165,7 +203,7 @@ swarm-pack install --target opencode --global --team assurance-team
 swarm-pack install --target opencode --global --team mission-team
 ```
 
-Replace `opencode` with `codex` or `copilot` to install the same team selection for another target.
+Replace `opencode` with `codex`, `copilot`, or `claude` to install the same team selection for another target.
 
 Implemented teams:
 
@@ -180,7 +218,7 @@ Installing `review-team` or `feature-team` also installs the shared `delivery-te
 
 ## Restart Required
 
-OpenCode loads agents, commands, and skills on startup. Codex and Copilot load custom agents, instructions, and skills at startup. Restart the target tool after installing or updating these teams.
+OpenCode loads agents, commands, and skills on startup. Codex and Copilot load custom agents, instructions, and skills at startup. Claude Code watches existing agent and skill directories, but a restart is safest after creating the first `.claude/agents/` or `.claude/skills/` directory. Restart the target tool after installing or updating these teams.
 
 ## Manual Uninstall
 
@@ -221,4 +259,13 @@ GitHub Copilot:
 .github/copilot-instructions.md
 .github/agents/swarm-*.agent.md
 .agents/skills/swarm-pack/
+```
+
+Claude Code:
+
+```text
+CLAUDE.md
+.claude/agents/swarm-*.md
+.claude/skills/swarm-pack/
+.claude/skills/swarm-*/SKILL.md
 ```

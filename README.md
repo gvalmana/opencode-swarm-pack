@@ -1,6 +1,6 @@
 # Swarm Pack
 
-Swarm Pack brings SwarmForge-style role workflows to AI coding tools using native target adapters. OpenCode, Codex, and GitHub Copilot are currently supported installation targets.
+Swarm Pack brings SwarmForge-style role workflows to AI coding tools using native target adapters. OpenCode, Codex, GitHub Copilot, and Claude Code are currently supported installation targets.
 
 The first implemented team is `delivery-team`:
 
@@ -44,6 +44,12 @@ Install globally for GitHub Copilot:
 swarm-pack install --target copilot --global
 ```
 
+Install globally for Claude Code:
+
+```sh
+swarm-pack install --target claude --global
+```
+
 If `--team` is omitted, all bundled teams are installed.
 
 Install locally into a specific project:
@@ -64,6 +70,12 @@ Install locally into a GitHub Copilot project:
 swarm-pack install --target copilot --local /path/to/project
 ```
 
+Install locally into a Claude Code project:
+
+```sh
+swarm-pack install --target claude --local /path/to/project
+```
+
 Install locally into the current project:
 
 ```sh
@@ -78,7 +90,7 @@ Use `--force` to replace previously installed files from these teams:
 swarm-pack install --target opencode --global --force
 ```
 
-Restart the target tool after installing. OpenCode, Codex, and GitHub Copilot load agents, instructions, and skills at startup.
+Restart the target tool after installing. OpenCode, Codex, GitHub Copilot, and Claude Code load agents, instructions, and skills at startup. Claude Code can detect many agent and skill edits live, but a restart is safest after creating the first `.claude/agents/` or `.claude/skills/` directory.
 
 Legacy manual installation remains available with `./install.sh --self-install`.
 
@@ -115,6 +127,14 @@ Copilot also does not install `/swarm-*` command files. After Copilot installati
 ```text
 Use the swarm-coder agent, then the swarm-cleaner agent, to run the delivery-team workflow for this request. Wait for each HANDOFF before continuing.
 ```
+
+Claude Code installs workflow entrypoints as skills, so `/swarm-*` invocations are available after installation:
+
+```text
+/swarm-delivery implement a small validation for checkout totals
+```
+
+Claude Code also installs reusable subagents under `.claude/agents/` or `~/.claude/agents/`. Experimental Claude Code agent teams can reuse those subagent definitions when `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` is enabled.
 
 ## Documentation
 

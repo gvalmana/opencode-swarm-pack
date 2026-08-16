@@ -11,6 +11,8 @@ swarm-pack install --target codex --local .
 swarm-pack install --target codex --global
 swarm-pack install --target copilot --local .
 swarm-pack install --target copilot --global
+swarm-pack install --target claude --local .
+swarm-pack install --target claude --global
 ```
 
 ## Confirmed Decisions
@@ -19,7 +21,7 @@ swarm-pack install --target copilot --global
 - Omitting `--team` installs all bundled teams.
 - The installer does not auto-detect tools.
 - The installer does not scan user directories looking for supported tools.
-- OpenCode, Codex, and GitHub Copilot are functional targets.
+- OpenCode, Codex, GitHub Copilot, and Claude Code are functional targets.
 - Portable definitions will live under a canonical `swarm/` folder.
 - Existing OpenCode-oriented `teams/` assets remain supported during the transition.
 - `install.sh` remains a legacy manual installer and is not invoked by npm.
@@ -72,6 +74,7 @@ src/
     opencode.js
     codex.js
     copilot.js
+    claude.js
 ```
 
 ## Phase 1: Architecture Preparation
@@ -170,6 +173,15 @@ GitHub Copilot renderer responsibilities:
 - Do not copy OpenCode commands because Copilot does not use `.opencode/commands/*.md` or `/swarm-*` command files.
 - Do not install hooks by default because Copilot hooks are session policy and automation.
 
+Claude Code renderer responsibilities:
+
+- Render OpenCode-oriented `agents/*.md` role definitions to `.claude/agents/*.md` or `~/.claude/agents/*.md` custom subagents.
+- Generate compact Claude Code instructions in `CLAUDE.md` or `~/.claude/CLAUDE.md`.
+- Copy reusable skills to `.claude/skills/` or `~/.claude/skills/`.
+- Render OpenCode workflow commands to Claude Code skills at `.claude/skills/swarm-*/SKILL.md` so `/swarm-*` entrypoints remain available.
+- Translate OpenCode permission intent to Claude Code `tools` lists and role instructions.
+- Do not enable experimental Claude Code agent teams automatically; installed subagents can be reused by teams when users opt in with `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`.
+
 ## Phase 4: Codex Target
 
 Codex is the first target after architecture preparation.
@@ -243,6 +255,43 @@ After installing into Copilot, invoke workflows with prompts such as:
 Use the swarm-coder agent, then the swarm-cleaner agent, to run the delivery-team workflow for this request. Wait for each HANDOFF before continuing.
 ```
 
+## Phase 6: Claude Code Target
+
+Claude Code is implemented as a native Markdown target.
+
+Implemented behavior:
+
+- Local subagents: `<project>/.claude/agents/*.md`.
+- Global subagents: `~/.claude/agents/*.md`.
+- Local instructions: `<project>/CLAUDE.md`.
+- Global instructions: `~/.claude/CLAUDE.md`.
+- Local skills: `<project>/.claude/skills/`.
+- Global skills: `~/.claude/skills/`.
+- Workflow entrypoints render as Claude Code skills, so `/swarm-delivery`, `/swarm-review`, `/swarm-feature`, `/swarm-assurance`, and `/swarm-mission` are available.
+- Coordinator roles render with `Agent`, read/search/edit/execute, `TodoWrite`, and `Skill` tools.
+- Read-only roles render without edit/write tools and use `permissionMode: plan`.
+- Write-capable roles render with read/search/edit/execute, `TodoWrite`, and `Skill` tools.
+
+Intentional limitations:
+
+- Claude Code does not receive OpenCode's granular per-agent Bash allowlist; command safety is represented through `tools`, `permissionMode`, inherited session permissions, and role prompt discipline.
+- Claude Code agent teams are experimental and are not enabled or configured by the installer.
+- No Claude Code hook generation in the first Claude target implementation.
+- No automatic Claude Code detection; users still pass `--target claude` explicitly.
+
+Expected commands:
+
+```sh
+swarm-pack install --target claude --local .
+swarm-pack install --target claude --global
+```
+
+After installing into Claude Code, invoke workflows with skills such as:
+
+```text
+/swarm-delivery implement a small validation for checkout totals
+```
+
 ## Optional Informational Commands
 
 These commands may be added later. They should not scan user directories.
@@ -259,6 +308,7 @@ Supported targets:
 - opencode
 - codex
 - copilot
+- claude
 ```
 
 `swarm-pack teams` should list bundled teams only.
