@@ -136,6 +136,8 @@ Claude Code installs workflow entrypoints as skills, so `/swarm-*` invocations a
 
 Claude Code also installs reusable subagents under `.claude/agents/` or `~/.claude/agents/`. Experimental Claude Code agent teams can reuse those subagent definitions when `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` is enabled.
 
+See `docs/teams.md` for target-independent agent responsibilities, team selection guidance, and workflow prompt examples.
+
 ## Documentation
 
 - `docs/architecture.md`

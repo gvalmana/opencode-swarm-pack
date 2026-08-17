@@ -6,6 +6,8 @@ The review command is `/swarm-review`.
 
 The mission command is `/swarm-mission`.
 
+Claude Code renders these workflow entrypoints as skills. OpenCode renders them as command files. Codex and Copilot use prompt-driven workflows with the installed agents.
+
 Example:
 
 ```text
@@ -19,6 +21,62 @@ Other examples:
 /swarm-delivery add validation for invoice dates
 /swarm-delivery refactor the tax calculation service without changing behavior
 /swarm-delivery fix the null customer edge case in checkout
+```
+
+## Team Selection Guide
+
+| Team | Entrypoint | Best for | Avoid when |
+|---|---|---|---|
+| Delivery Team | `/swarm-delivery` | Small bugs, small features, focused local changes | Acceptance criteria are unclear or independent review is required |
+| Review Team | `/swarm-review` | Risky fixes, review-heavy implementation, local PR hardening | The task is trivial or needs formal QA execution |
+| Feature Team | `/swarm-feature` | Medium features, explicit acceptance criteria, architecture-adjacent behavior | You need independent QA or mission-level gates |
+| Assurance Team | `/swarm-assurance` | Large or critical changes, hardening, independent QA | The change is too small for full quality-gate overhead |
+| Mission Team | `/swarm-mission` | Epics, multi-story themes, acceptance and QA procedure gates | You need a quick local implementation loop |
+
+Use the complete workflow entrypoint when you want repeatable orchestration. Use an individual agent only when you intentionally want that isolated role and no team workflow.
+
+## Hello World Prompts
+
+Delivery Team:
+
+```text
+/swarm-delivery crea un Hello World en Python que imprima exactamente "Hello, World!" al ejecutar python hello.py. No agregues dependencias y verifica con python hello.py.
+```
+
+Review Team:
+
+```text
+/swarm-review crea un Hello World en Python y revisa la implementación por edge cases, simplicidad y comandos de verificación. No agregues dependencias.
+```
+
+Feature Team:
+
+```text
+/swarm-feature crea una CLI mínima en Python para Hello World con criterios de aceptación explícitos antes de implementar. Debe ejecutarse con python hello.py y mostrar exactamente "Hello, World!".
+```
+
+Assurance Team:
+
+```text
+/swarm-assurance crea un Hello World en Python con verificación independiente y hardening básico. No agregues frameworks nuevos; debe ejecutarse con python hello.py y mostrar exactamente "Hello, World!".
+```
+
+Mission Team:
+
+```text
+/swarm-mission crea un Hello World en Python.
+
+Objetivo:
+- Crear un script Python simple que imprima `Hello, World!`.
+- Usar una estructura mínima y clara.
+- Añadir una prueba básica si el proyecto ya tiene convención de tests; si no existe, no agregues framework nuevo.
+
+Criterios de aceptación:
+- El script debe poder ejecutarse con `python hello.py`.
+- La salida debe ser exactamente: `Hello, World!`.
+- No modifiques archivos no relacionados.
+- No agregues dependencias.
+- Verifica la ejecución con el comando más pequeño posible.
 ```
 
 ## Hello World Example
