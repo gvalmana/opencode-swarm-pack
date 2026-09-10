@@ -1,10 +1,6 @@
 # Usage
 
-The first available command is `/swarm-delivery`.
-
-The review command is `/swarm-review`.
-
-The mission command is `/swarm-mission`.
+Available workflow entrypoints: `/swarm-delivery`, `/swarm-review`, `/swarm-feature`, `/swarm-assurance`, and `/swarm-mission`.
 
 Claude Code renders these workflow entrypoints as skills. OpenCode renders them as command files. Codex and Copilot use prompt-driven workflows with the installed agents.
 

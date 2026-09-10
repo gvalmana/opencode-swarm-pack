@@ -69,6 +69,8 @@ The role should report the missing command in its handoff. The orchestrator can 
 
 The orchestrator should stop before committing and ask how to proceed. It must not revert user changes.
 
+With Phase 6 worktrees enabled, the orchestrator inspects `git -C <wt> diff <base>..HEAD` after each role. Unexpected files outside the role's assignment trigger the same stop-and-ask behavior.
+
 ## Existing Dirty Worktree
 
 The orchestrator should inspect existing changes before starting. If user changes overlap with role-owned work, it should ask before proceeding.
@@ -140,9 +142,3 @@ The orchestrator does not modify `.gitignore` automatically. After the first ses
 ```
 
 If `.worktrees/` is committed, `git worktree add` may still work but produces noise in `git status`.
-
-## Unexpected Files Changed
-
-The orchestrator should stop before committing and ask how to proceed. It must not revert user changes.
-
-With Phase 6 worktrees enabled, the orchestrator inspects `git -C <wt> diff <base>..HEAD` after each role. Unexpected files outside the role's assignment trigger the same stop-and-ask behavior.

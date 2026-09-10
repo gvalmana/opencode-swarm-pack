@@ -52,7 +52,7 @@ When the project has language CRAP and DRY tools, install them at startup and ma
 ## Handoff Rules
 
 - Before final verification and handoff, run the language CRAP tool and the language DRY tool when the project has them. Fix any issues they find.
-- When verification passes, the orchestrator commits any QA-owned changes and notifies the specifier, coder, cleaner, architect, and hardender that QA is complete.
+- When verification passes, the orchestrator commits any QA-owned changes; QA completion ends the assurance flow.
 
 ## Handoff
 

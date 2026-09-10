@@ -2,13 +2,13 @@
 
 Swarm Pack brings SwarmForge-style role workflows to AI coding tools using native target adapters. OpenCode, Codex, GitHub Copilot, and Claude Code are currently supported installation targets.
 
-The first implemented team is `delivery-team`:
+Five teams ship today, from the smallest delivery loop to the full mission workflow:
 
 ```text
-coder -> cleaner -> final
+delivery-team:  coder -> cleaner -> final
 ```
 
-All defined teams are implemented incrementally and reuse shared role agents where responsibilities match.
+Teams reuse shared role agents where responsibilities match. See `docs/teams.md` for the full list.
 
 ## Goals
 
@@ -148,6 +148,7 @@ See `docs/teams.md` for target-independent agent responsibilities, team selectio
 - `docs/role-traceability.md`
 - `docs/teams.md`
 - `docs/multi-target-support.md`
+- `docs/worktree-discipline.md`
 - `docs/future-teams.md`
 - `docs/troubleshooting.md`
 

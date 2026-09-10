@@ -68,7 +68,7 @@ When the project has acceptance mutators (such as `gherkin-mutator`):
 ## Does Not Own
 
 - Do not introduce new behavior beyond structural fixes.
-- Do not run Gherkin acceptance mutation beyond the agreed level; the hardender or QA owns that.
+- Do not run Gherkin acceptance mutation beyond the agreed level; the hardener owns that.
 - Do not finalize the task; that is the orchestrator's job after the next role hands off.
 - Do not commit.
 
