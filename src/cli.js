@@ -26,11 +26,22 @@ Options:
   -h, --help          Show help`;
 }
 
+function readFlagValue(args, index, flag) {
+  const value = args[index + 1];
+
+  if (!value || value.startsWith("--")) {
+    throw new Error(`${flag} requires a value`);
+  }
+
+  return value;
+}
+
 function parseInstallArgs(args) {
   const options = {
     target: "",
     team: "all",
     force: false,
+    help: false,
     mode: "",
     localPath: "",
   };
@@ -40,18 +51,12 @@ function parseInstallArgs(args) {
 
     switch (arg) {
       case "--target":
+        options.target = readFlagValue(args, index, "--target");
         index += 1;
-        if (!args[index]) {
-          throw new Error("--target requires a target name");
-        }
-        options.target = args[index];
         break;
       case "--team":
+        options.team = readFlagValue(args, index, "--team");
         index += 1;
-        if (!args[index]) {
-          throw new Error("--team requires a team name");
-        }
-        options.team = args[index];
         break;
       case "--global":
         if (options.mode) {
@@ -63,12 +68,9 @@ function parseInstallArgs(args) {
         if (options.mode) {
           throw new Error("choose only one of --global or --local <project-path>");
         }
-        index += 1;
-        if (!args[index]) {
-          throw new Error("--local requires a project path");
-        }
+        options.localPath = readFlagValue(args, index, "--local");
         options.mode = "local";
-        options.localPath = args[index];
+        index += 1;
         break;
       case "--force":
         options.force = true;
@@ -90,13 +92,13 @@ function run(args, context) {
 
   if (!command || command === "-h" || command === "--help") {
     console.log(mainUsage());
-    return;
+    return 0;
   }
 
   if (command !== "install") {
     console.error(`ERROR: unknown command: ${command}`);
     console.error(mainUsage());
-    process.exit(1);
+    return 1;
   }
 
   let options;
@@ -105,19 +107,20 @@ function run(args, context) {
   } catch (error) {
     console.error(`ERROR: ${error.message}`);
     console.error(installUsage());
-    process.exit(1);
+    return 1;
   }
 
   if (options.help) {
     console.log(installUsage());
-    return;
+    return 0;
   }
 
   try {
     install({ ...options, packageRoot: context.packageRoot });
+    return 0;
   } catch (error) {
     console.error(`ERROR: ${error.message}`);
-    process.exit(1);
+    return 1;
   }
 }
 

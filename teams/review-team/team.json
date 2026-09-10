@@ -1,0 +1,6 @@
+{
+  "name": "review-team",
+  "summary": "Implementation with adversarial read-only review until approved.",
+  "dependencies": ["delivery-team"],
+  "workflow": "swarm-coder -> swarm-reviewer -> swarm-coder until approved"
+}

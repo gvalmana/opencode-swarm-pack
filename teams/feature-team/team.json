@@ -1,0 +1,6 @@
+{
+  "name": "feature-team",
+  "summary": "Spec-driven medium features with structural review.",
+  "dependencies": ["delivery-team"],
+  "workflow": "swarm-specifier -> swarm-coder -> swarm-refactorer -> swarm-architect -> final"
+}

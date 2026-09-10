@@ -1,6 +1,6 @@
 {
   "name": "swarm-pack",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Reusable agent swarm workflow packs for AI coding tools.",
   "bin": {
     "swarm-pack": "./bin/swarm-pack.js"
@@ -8,11 +8,28 @@
   "files": [
     "bin/",
     "src/",
-    "swarm/",
     "teams/",
     "docs/",
     "README.md",
+    "CHANGELOG.md",
     "install.sh"
   ],
+  "keywords": [
+    "agents",
+    "ai",
+    "claude",
+    "codex",
+    "copilot",
+    "opencode",
+    "swarm",
+    "workflow"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gvalmana/opencode-swarm-pack.git"
+  },
+  "engines": {
+    "node": ">=18"
+  },
   "license": "MIT"
 }

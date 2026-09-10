@@ -1,0 +1,6 @@
+{
+  "name": "assurance-team",
+  "summary": "Full quality gates: specification, hardening, and independent QA.",
+  "dependencies": ["feature-team"],
+  "workflow": "swarm-specifier -> swarm-coder -> swarm-cleaner -> swarm-architect -> swarm-hardener -> swarm-qa -> final"
+}

@@ -13,47 +13,15 @@ function isDirectory(dir) {
   }
 }
 
-function filesAreEqual(source, destination) {
-  if (!fs.existsSync(destination)) {
-    return false;
-  }
-
-  return fs.readFileSync(source).equals(fs.readFileSync(destination));
+function planCopyFile(plan, source, destination) {
+  plan.push({ kind: "copy", source, destination });
 }
 
-function installFile(source, destination, options) {
-  ensureDirectory(path.dirname(destination));
-
-  if (fs.existsSync(destination) && !options.force) {
-    if (filesAreEqual(source, destination)) {
-      return;
-    }
-
-    throw new Error(
-      `target exists with different content: ${destination}\nUse --force to overwrite.`
-    );
-  }
-
-  fs.copyFileSync(source, destination);
+function planWriteFile(plan, content, destination) {
+  plan.push({ kind: "write", content, destination });
 }
 
-function installGeneratedFile(content, destination, options) {
-  ensureDirectory(path.dirname(destination));
-
-  if (fs.existsSync(destination) && !options.force) {
-    if (fs.readFileSync(destination, "utf8") === content) {
-      return;
-    }
-
-    throw new Error(
-      `target exists with different content: ${destination}\nUse --force to overwrite.`
-    );
-  }
-
-  fs.writeFileSync(destination, content);
-}
-
-function installDirectory(sourceDir, destinationDir, options) {
+function planDirectoryCopy(sourceDir, destinationDir, plan) {
   if (!isDirectory(sourceDir)) {
     return;
   }
@@ -63,17 +31,110 @@ function installDirectory(sourceDir, destinationDir, options) {
     const destination = path.join(destinationDir, entry.name);
 
     if (entry.isDirectory()) {
-      installDirectory(source, destination, options);
+      planDirectoryCopy(source, destination, plan);
     } else if (entry.isFile()) {
-      installFile(source, destination, options);
+      planCopyFile(plan, source, destination);
     }
   }
 }
 
+function entryBytes(entry) {
+  if (entry.kind === "copy") {
+    return fs.readFileSync(entry.source);
+  }
+
+  return Buffer.from(entry.content, "utf8");
+}
+
+function entryMatchesExisting(entry) {
+  if (!fs.existsSync(entry.destination) || isDirectory(entry.destination)) {
+    return false;
+  }
+
+  return entryBytes(entry).equals(fs.readFileSync(entry.destination));
+}
+
+function dedupePlan(plan) {
+  const byDestination = new Map();
+
+  for (const entry of plan) {
+    const existing = byDestination.get(entry.destination);
+
+    if (!existing) {
+      byDestination.set(entry.destination, entry);
+      continue;
+    }
+
+    if (!entryBytes(existing).equals(entryBytes(entry))) {
+      throw new Error(
+        `namespace collision: two planned files produce different content for ${entry.destination}\n` +
+          "Rename one of the source files or install only one of the colliding teams."
+      );
+    }
+  }
+
+  return [...byDestination.values()];
+}
+
+function checkPlanConflicts(plan, options) {
+  const unique = dedupePlan(plan);
+  const problems = [];
+
+  for (const entry of unique) {
+    if (!fs.existsSync(entry.destination)) {
+      continue;
+    }
+
+    if (isDirectory(entry.destination)) {
+      problems.push(`${entry.destination} (a directory exists at this path)`);
+      continue;
+    }
+
+    if (!options.force && !entryMatchesExisting(entry)) {
+      problems.push(entry.destination);
+    }
+  }
+
+  if (problems.length > 0) {
+    throw new Error(
+      `targets exist with different content:\n${problems.map((p) => `  - ${p}`).join("\n")}\n` +
+        "Use --force to overwrite."
+    );
+  }
+
+  return unique;
+}
+
+function executePlan(uniquePlan) {
+  const written = [];
+  let skipped = 0;
+
+  for (const entry of uniquePlan) {
+    if (entryMatchesExisting(entry)) {
+      skipped += 1;
+      continue;
+    }
+
+    ensureDirectory(path.dirname(entry.destination));
+
+    if (entry.kind === "copy") {
+      fs.copyFileSync(entry.source, entry.destination);
+    } else {
+      fs.writeFileSync(entry.destination, entry.content);
+    }
+
+    written.push(entry.destination);
+  }
+
+  return { written, skipped };
+}
+
 module.exports = {
+  checkPlanConflicts,
   ensureDirectory,
-  installDirectory,
-  installFile,
-  installGeneratedFile,
+  executePlan,
   isDirectory,
+  planCopyFile,
+  planDirectoryCopy,
+  planWriteFile,
 };

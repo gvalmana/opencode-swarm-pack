@@ -3,6 +3,8 @@
 const path = require("node:path");
 const { run } = require("../src/cli");
 
-run(process.argv.slice(2), {
-  packageRoot: path.resolve(__dirname, ".."),
-});
+process.exit(
+  run(process.argv.slice(2), {
+    packageRoot: path.resolve(__dirname, ".."),
+  })
+);

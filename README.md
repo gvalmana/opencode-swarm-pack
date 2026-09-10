@@ -92,7 +92,7 @@ swarm-pack install --target opencode --global --force
 
 Restart the target tool after installing. OpenCode, Codex, GitHub Copilot, and Claude Code load agents, instructions, and skills at startup. Claude Code can detect many agent and skill edits live, but a restart is safest after creating the first `.claude/agents/` or `.claude/skills/` directory.
 
-Legacy manual installation remains available with `./install.sh --self-install`.
+Legacy manual installation remains available with `./install.sh --self-install`. Legacy `./install.sh --global` and `./install.sh --local <path>` delegate to `swarm-pack install --target opencode` so the Node CLI remains the single installer implementation.
 
 ## Usage
 

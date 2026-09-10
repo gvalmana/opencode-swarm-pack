@@ -1,0 +1,6 @@
+{
+  "name": "mission-team",
+  "summary": "Mission leader coordinating analysis, acceptance, implementation, review, hardening, QA, and readiness gates.",
+  "dependencies": ["delivery-team"],
+  "workflow": "use swarm-mission-leader to coordinate the mission workflow"
+}

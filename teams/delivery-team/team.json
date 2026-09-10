@@ -1,0 +1,6 @@
+{
+  "name": "delivery-team",
+  "summary": "Smallest Swarm Pack workflow: coder, cleaner, final.",
+  "dependencies": [],
+  "workflow": "swarm-coder -> swarm-cleaner -> final"
+}

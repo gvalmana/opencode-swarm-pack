@@ -10,9 +10,9 @@ Usage:
 
 Options:
   --self-install      Copy these teams to ~/.local/share and install opencode-swarm-install
-  --global            Install into ~/.config/opencode
-  --local <path>      Install into <path>/.opencode
-  --team <name>       Team to install. Available: delivery-team, review-team, feature-team, assurance-team, mission-team
+  --global            Install into ~/.config/opencode (delegates to the npm CLI)
+  --local <path>      Install into <path>/.opencode (delegates to the npm CLI)
+  --team <name>       Team to install. Default: all
   --force             Overwrite existing installed files
   -h, --help          Show this help
 USAGE
@@ -20,8 +20,8 @@ USAGE
 
 mode=""
 local_path=""
-team="delivery-team"
-force="no"
+team=""
+force=""
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
@@ -117,84 +117,22 @@ if [ "$mode" = "self-install" ]; then
   exit 0
 fi
 
-case "$team" in
-  delivery-team|review-team|feature-team|assurance-team|mission-team) ;;
-  *)
-    echo "ERROR: team '$team' is not implemented yet. Available: delivery-team, review-team, feature-team, assurance-team, mission-team" >&2
-    exit 1
-    ;;
-esac
+# Team installation is delegated to the npm CLI so there is a single source of
+# truth for teams, dependencies, and overwrite semantics.
+set -- install --target opencode
 
 if [ "$mode" = "global" ]; then
-  target_dir="${HOME}/.config/opencode"
+  set -- "$@" --global
 else
-  if [ ! -d "$local_path" ]; then
-    echo "ERROR: local project path does not exist: $local_path" >&2
-    exit 1
-  fi
-  target_dir=$(CDPATH= cd -- "$local_path" && pwd)/.opencode
+  set -- "$@" --local "$local_path"
 fi
 
-install_file() {
-  src="$1"
-  dest="$2"
-  dest_parent=$(dirname -- "$dest")
-  mkdir -p "$dest_parent"
+if [ -n "$team" ]; then
+  set -- "$@" --team "$team"
+fi
 
-  if [ -e "$dest" ] && [ "$force" != "yes" ]; then
-    if cmp -s "$src" "$dest"; then
-      return 0
-    fi
-    echo "ERROR: target exists with different content: $dest" >&2
-    echo "Use --force to overwrite." >&2
-    exit 1
-  fi
+if [ "$force" = "yes" ]; then
+  set -- "$@" --force
+fi
 
-  cp "$src" "$dest"
-}
-
-install_dir() {
-  src_dir="$1"
-  dest_dir="$2"
-
-  if [ ! -d "$src_dir" ]; then
-    return 0
-  fi
-
-  find "$src_dir" -type f | while IFS= read -r src; do
-    rel=${src#"$src_dir"/}
-    install_file "$src" "$dest_dir/$rel"
-  done
-}
-
-install_team() {
-  selected_team="$1"
-  selected_team_dir="$script_dir/teams/$selected_team"
-
-  if [ ! -d "$selected_team_dir" ]; then
-    echo "ERROR: team directory not found: $selected_team_dir" >&2
-    exit 1
-  fi
-
-  install_dir "$selected_team_dir/agents" "$target_dir/agents"
-  install_dir "$selected_team_dir/commands" "$target_dir/commands"
-  install_dir "$selected_team_dir/skills" "$target_dir/skills"
-}
-
-case "$team" in
-  delivery-team) ;;
-  review-team|feature-team|assurance-team|mission-team)
-    install_team "delivery-team"
-    ;;
-esac
-
-case "$team" in
-  assurance-team)
-    install_team "feature-team"
-    ;;
-esac
-
-install_team "$team"
-
-echo "Installed $team into $target_dir"
-echo "Restart OpenCode for the new agents, commands, and skills to load."
+exec node "$script_dir/bin/swarm-pack.js" "$@"

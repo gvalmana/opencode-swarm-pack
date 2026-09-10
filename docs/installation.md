@@ -29,6 +29,13 @@ If `--team` is omitted, all bundled teams are installed.
 
 The npm installer is implemented in Node and does not invoke `install.sh`.
 
+`install.sh` remains available for legacy OpenCode usage. Its `--global` and
+`--local` modes now delegate to the same Node CLI with `--target opencode`, so
+team selection, dependency resolution, and overwrite behavior share one source
+of truth. Its `--self-install` mode still copies the repository to
+`~/.local/share/opencode-swarm-teams/` and creates
+`~/.local/bin/opencode-swarm-install`.
+
 ## Legacy Self-Install
 
 The shell installer remains available for manual legacy usage:
@@ -37,7 +44,7 @@ The shell installer remains available for manual legacy usage:
 ./install.sh --self-install
 ```
 
-This copies the team definitions to `~/.local/share/opencode-swarm-teams/` and creates `~/.local/bin/opencode-swarm-install`.
+This copies the repository to `~/.local/share/opencode-swarm-teams/` and creates `~/.local/bin/opencode-swarm-install`.
 
 ## Global Installation
 
@@ -214,7 +221,7 @@ Implemented teams:
 - `assurance-team`
 - `mission-team`
 
-Installing `review-team` or `feature-team` also installs the shared `delivery-team` base files. Installing `assurance-team` installs both `delivery-team` and `feature-team` dependencies. Installing `mission-team` installs only `delivery-team` plus `mission-team`.
+Team dependencies are resolved transitively from `teams/<team>/team.json`. Installing `review-team` or `feature-team` also installs the shared `delivery-team` base files. Installing `assurance-team` installs `feature-team` and its `delivery-team` dependency. Installing `mission-team` installs only `delivery-team` plus `mission-team`.
 
 ## Restart Required
 
