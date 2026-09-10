@@ -1,6 +1,6 @@
 # Usage
 
-Available workflow entrypoints: `/swarm-delivery`, `/swarm-review`, `/swarm-feature`, `/swarm-assurance`, and `/swarm-mission`.
+Available workflow entrypoints: `/swarm-delivery`, `/swarm-review`, `/swarm-feature`, `/swarm-assurance`, `/swarm-maintenance`, `/swarm-hotfix`, and `/swarm-mission`.
 
 Claude Code renders these workflow entrypoints as skills. OpenCode renders them as command files. Codex and Copilot use prompt-driven workflows with the installed agents.
 
@@ -8,6 +8,8 @@ Example:
 
 ```text
 /swarm-delivery fix the checkout total duplication bug
+/swarm-hotfix fix the production null customer edge case
+/swarm-maintenance refactor the invoice parser without changing behavior
 /swarm-mission coordinate a multi-story checkout reliability initiative
 ```
 
@@ -26,7 +28,9 @@ Other examples:
 | Delivery Team | `/swarm-delivery` | Small bugs, small features, focused local changes | Acceptance criteria are unclear or independent review is required |
 | Review Team | `/swarm-review` | Risky fixes, review-heavy implementation, local PR hardening | The task is trivial or needs formal QA execution |
 | Feature Team | `/swarm-feature` | Medium features, explicit acceptance criteria, architecture-adjacent behavior | You need independent QA or mission-level gates |
-| Assurance Team | `/swarm-assurance` | Large or critical changes, hardening, independent QA | The change is too small for full quality-gate overhead |
+| Assurance Team | `/swarm-assurance` | Large or critical changes, hardening, security review, independent QA | The change is too small for full quality-gate overhead |
+| Maintenance Team | `/swarm-maintenance` | Behavior-preserving refactors and cleanup | Any new behavior is required |
+| Hotfix Team | `/swarm-hotfix` | Narrow urgent fixes with adversarial review | The fix needs specification, hardening, or QA gates |
 | Mission Team | `/swarm-mission` | Epics, multi-story themes, acceptance and QA procedure gates | You need a quick local implementation loop |
 
 Use the complete workflow entrypoint when you want repeatable orchestration. Use an individual agent only when you intentionally want that isolated role and no team workflow.

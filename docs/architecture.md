@@ -13,9 +13,9 @@ Swarm Pack adapts SwarmForge concepts to OpenCode without copying the tmux daemo
 | daemon-driven tmux wakeups | orchestrator-controlled delegation |
 | role worktrees | per-role worktrees since Phase 6 (one shared worktree before) |
 
-## First Phase
+## Worktree Model
 
-Phase 1 through 5 intentionally avoids background daemons and uses a single shared worktree. Phase 6 introduces per-role worktrees while preserving the orchestrator-owned commit contract.
+Phase 1 through 5 intentionally avoided background daemons and used a single shared worktree. Phase 6 introduced per-role worktrees while preserving the orchestrator-owned commit contract.
 
 The orchestration model is:
 
@@ -44,9 +44,19 @@ The agents remain the actual workers. The command is only the front door.
 
 Swarm Pack is expected to support multiple AI coding tools through explicit installation targets. The installer must not auto-detect tools or scan user directories. Users select the tool with `--target`.
 
-The current OpenCode files remain the functional implementation. Future targets should use a portable canonical model under `swarm/` and target adapters that render that model into each tool's native format.
+The current `teams/` tree is the functional implementation. Each `teams/<team>/team.json` file declares dependency and workflow metadata, and target adapters render or copy those assets into each tool's native format. The `swarm/` directory remains a scaffold-only canonical experiment and is not shipped in the npm package payload.
 
 See `docs/multi-target-support.md` for the roadmap and pending work.
+
+## Current Teams
+
+- `delivery-team`: coder -> cleaner -> final.
+- `review-team`: coder -> reviewer -> coder until approved.
+- `feature-team`: specifier -> coder -> refactorer -> architect -> final.
+- `assurance-team`: specifier -> coder -> cleaner -> architect -> hardener -> security-reviewer -> qa -> final.
+- `maintenance-team`: cleaner -> refactorer -> architect -> final.
+- `hotfix-team`: coder -> reviewer -> final.
+- `mission-team`: mission leader coordinates the advanced gated workflow.
 
 ## Delivery Team Flow Diagram
 

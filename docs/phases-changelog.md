@@ -1,4 +1,6 @@
-# Future Teams
+# Phases Changelog
+
+This historical phase log records how Swarm Pack evolved. Future work is tracked in `docs/roadmap.md`.
 
 Future work should be incremental. Do not implement all SwarmForge complexity before the `delivery-team` has proven useful.
 
@@ -55,7 +57,7 @@ The mission workflow should include:
 - Result handoffs.
 - Optional worktree isolation.
 
-Mission work reuses existing implementation, review, cleanup, architecture, hardening, and QA agents instead of duplicating them.
+Mission work uses dedicated `swarm-mission-*` agents where shared role names would collide in OpenCode's flat namespace, and reuses shared base roles where names do not collide.
 
 ## Phase 6: Optional Worktrees
 
@@ -67,9 +69,8 @@ Deliverables:
 
 - `teams/delivery-team/skills/swarm-pack/SKILL.md` — new "Worktree Discipline" section.
 - `teams/delivery-team/agents/swarm-orchestrator.md` — new "Worktree Rules" section alongside "Commit Rules"; HANDOFF expectations updated to include `worktree_path`, `branch`, `base_sha`; final response includes `worktrees_used`.
-- `teams/delivery-team/agents/swarm-coder.md` and `swarm-cleaner.md` — HANDOFF extended with worktree fields; rules forbid creating/removing/merging worktrees.
-- `teams/review-team/agents/swarm-reviewer.md` — same HANDOFF extension; read-only review still applies.
-- `teams/delivery-team/commands/swarm-delivery.md` and `teams/review-team/commands/swarm-review.md` — document `--no-worktree` opt-out.
+- Shared and mission subagents — HANDOFF extended with worktree fields; rules forbid creating/removing/merging worktrees.
+- `teams/delivery-team/commands/swarm-delivery.md`, `teams/review-team/commands/swarm-review.md`, `teams/feature-team/commands/swarm-feature.md`, `teams/assurance-team/commands/swarm-assurance.md`, and `teams/mission-team/commands/swarm-mission.md` — document `--no-worktree` opt-out.
 - `docs/worktree-discipline.md` — canonical spec (layout, naming, merge strategy, dirty detection, conflict detection, opt-out, concurrent session safety, recovery).
 - `docs/architecture.md` — updated diagrams showing worktree boundaries.
 - `docs/usage.md` — updated flow with worktree add/remove, final summary includes `worktrees_used`.

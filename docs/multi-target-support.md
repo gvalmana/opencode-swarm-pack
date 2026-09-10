@@ -59,7 +59,9 @@ Each target should expose a small common contract:
     instructions: true
   },
   resolveTargetDirectory(options) {},
-  installTeam(context) {}
+  describeDestinations(options, targetDirectory) {},
+  installTeam(packageRoot, targetDirectory, teamName, options, plan) {},
+  installInstructions(teams, options, plan) // optional
 }
 ```
 
@@ -99,9 +101,9 @@ Acceptance criteria:
 - `src/install.js` no longer knows concrete target modules directly.
 - The registry is the only place that lists supported targets.
 
-## Phase 2: Canonical Swarm Folder
+## Phase 2: Team Manifests And Canonical Scaffold
 
-Portable definitions live under `swarm/`.
+Functional definitions live under `teams/`. Each team has `team.json` metadata with `name`, `summary`, `dependencies`, and `workflow`; `src/teams.js` resolves dependencies transitively. The older `swarm/` directory remains a scaffold-only canonical experiment and is not included in the npm package payload.
 
 Implemented scaffold:
 
@@ -143,7 +145,7 @@ Example `team.json` shape:
 }
 ```
 
-The current canonical delivery team is scaffold-only. Functional OpenCode assets still live under `teams/delivery-team/` until renderers can reproduce the existing behavior.
+The canonical scaffold is not used by the installer. Renderers consume `teams/` directly until a complete canonical model can reproduce the existing behavior.
 
 ## Phase 3: Renderers
 
@@ -267,7 +269,7 @@ Implemented behavior:
 - Global instructions: `~/.claude/CLAUDE.md`.
 - Local skills: `<project>/.claude/skills/`.
 - Global skills: `~/.claude/skills/`.
-- Workflow entrypoints render as Claude Code skills, so `/swarm-delivery`, `/swarm-review`, `/swarm-feature`, `/swarm-assurance`, and `/swarm-mission` are available.
+- Workflow entrypoints render as Claude Code skills, so `/swarm-delivery`, `/swarm-review`, `/swarm-feature`, `/swarm-assurance`, `/swarm-maintenance`, `/swarm-hotfix`, and `/swarm-mission` are available.
 - Coordinator roles render with `Agent`, read/search/edit/execute, `TodoWrite`, and `Skill` tools.
 - Read-only roles render without edit/write tools and use `permissionMode: plan`.
 - Write-capable roles render with read/search/edit/execute, `TodoWrite`, and `Skill` tools.

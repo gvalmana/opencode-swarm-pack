@@ -7,10 +7,10 @@ This repository is a **team workflow bundle** with an npm CLI installer. It curr
 - `bin/swarm-pack.js` — npm CLI executable.
 - `src/` — Node installer implementation.
 - `install.sh` — legacy bash installer.
-- `swarm/` — planned canonical, tool-neutral swarm definitions.
+- `swarm/` — scaffold-only canonical experiment; not shipped in the npm package payload.
 - `teams/<team-name>/` — each team contains `agents/`, `commands/`, `skills/`.
 - `docs/` — canonical specs. Treat these as the source of truth over the README when they conflict.
-- `teams/mission-team/` — advanced workflow; reuse existing agents for equivalent implementation, review, cleanup, architecture, hardening, and QA roles.
+- `teams/mission-team/` — advanced workflow with dedicated `swarm-mission-*` agents where shared names would collide, plus shared base roles from `delivery-team`.
 
 ## Installer
 
@@ -38,7 +38,7 @@ Gotchas:
 - `--target` is required by design. The installer does not scan user directories or auto-detect tools.
 - Omitting `--team` installs all bundled teams. Use `--team <name>` for a specific team.
 - After install, **restart the target tool**. Agents, instructions, commands, and skills are loaded at startup; an in-session install will not appear until restart.
-- `--team review-team` and `--team feature-team` auto-install shared `delivery-team` files; `--team assurance-team` auto-installs both `delivery-team` and `feature-team` dependencies; `--team mission-team` installs only `delivery-team` plus `mission-team`.
+- Team dependencies are resolved transitively from `teams/<team>/team.json`. `review-team`, `feature-team`, and `mission-team` depend on `delivery-team`; `assurance-team` and `maintenance-team` depend on `feature-team`; `hotfix-team` depends on `review-team`.
 - `--local <path>` resolves `<path>` with realpath semantics, so a relative path must exist; `mkdir` it first.
 
 ## Team content conventions
@@ -50,7 +50,7 @@ When editing or adding files inside `teams/`:
 - **Subagents never commit.** Only `swarm-orchestrator` and `swarm-mission-leader` run `git commit`. This is enforced in prompt text, not by tooling — preserve the rule when editing agent prompts.
 - **HANDOFF format is fixed.** Every role agent must finish with the block defined in `teams/delivery-team/skills/swarm-pack/SKILL.md` and `docs/handoff-protocol.md`. Reviewers add a `decision:` and `findings:` field. Do not invent new fields without updating the skill and the protocol doc.
 - **Commit messages include `By <role>.` on a trailing line.** This is part of the discipline contract; do not drop it.
-- **Subagents return `commit_needed: no` and never touch git state** beyond `git status` / `git diff`. Their permission blocks reflect this — keep `git commit*` and `git add*` out of allow-lists for subagents.
+- **Subagents return `commit_needed: yes|no` and never touch git state** beyond read-only inspection unless explicitly allowed by the role. Their permission blocks reflect this — keep `git commit*` and `git add*` out of allow-lists for subagents.
 - **Worktree discipline (Phase 6).** When enabled, each subagent operates only inside the worktree path the orchestrator assigns (`.worktrees/swarm-<role>/<task-id>`, branch `swarm/<role>/<task-id>`). Subagents must not run `git worktree*`, `git merge*`, `git commit*`, or `git add*` — the orchestrator owns all of that. Subagent HANDOFFs must include `worktree_path`, `branch`, and `base_sha`. Honor the opt-out: `--no-worktree` in command arguments or `OPENCODE_SWARM_NO_WORKTREE=1`. See `docs/worktree-discipline.md` for the spec.
 - **Codex target rendering.** Codex custom agents are generated from `teams/*/agents/*.md` into `.codex/agents/*.toml`; OpenCode commands are not installed for Codex. Codex skills install under `.agents/skills/` or `~/.agents/skills/`, not `.codex/skills/`. Keep generated `AGENTS.md` compact because Codex defaults to a 32 KiB project instruction budget.
 - **Copilot target rendering.** Copilot custom agents are generated from `teams/*/agents/*.md` into `.github/agents/*.agent.md` or `~/.copilot/agents/*.agent.md`; OpenCode commands are not installed for Copilot. Copilot skills install under `.agents/skills/` or `~/.agents/skills/`. Use Copilot `tools` frontmatter to approximate role permissions.
@@ -63,7 +63,9 @@ Implemented and shippable:
 - `delivery-team` (coder → cleaner → final)
 - `review-team` (coder → reviewer → coder until approved)
 - `feature-team` (specifier → coder → refactorer → architect → final)
-- `assurance-team` (specifier → coder → cleaner → architect → hardener → qa → final)
+- `assurance-team` (specifier → coder → cleaner → architect → hardener → security-reviewer → qa → final)
+- `maintenance-team` (cleaner → refactorer → architect → final)
+- `hotfix-team` (coder → reviewer → final)
 - `mission-team` (mission leader coordinates analysis, acceptance, QA procedure, implementation, review, hardening, QA, readiness, final)
 
 Agents are reusable across teams by default. `mission-team` is the exception: it carries dedicated `swarm-mission-*` agents to mirror the full source workflow without overwriting shared agent names in OpenCode's flat agent namespace.

@@ -11,7 +11,7 @@ Check that the expected command file exists in one of:
 <project>/.opencode/commands/
 ```
 
-For example, `swarm-delivery.md`, `swarm-review.md`, `swarm-feature.md`, or `swarm-assurance.md` should be in the same command directory.
+For example, `swarm-delivery.md`, `swarm-review.md`, `swarm-feature.md`, `swarm-assurance.md`, `swarm-maintenance.md`, `swarm-hotfix.md`, or `swarm-mission.md` should be in the same command directory.
 
 ## Installer Command Does Not Work
 

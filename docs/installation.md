@@ -207,6 +207,8 @@ swarm-pack install --target opencode --global --team delivery-team
 swarm-pack install --target opencode --global --team review-team
 swarm-pack install --target opencode --global --team feature-team
 swarm-pack install --target opencode --global --team assurance-team
+swarm-pack install --target opencode --global --team maintenance-team
+swarm-pack install --target opencode --global --team hotfix-team
 swarm-pack install --target opencode --global --team mission-team
 ```
 
@@ -219,9 +221,11 @@ Implemented teams:
 - `review-team`
 - `feature-team`
 - `assurance-team`
+- `maintenance-team`
+- `hotfix-team`
 - `mission-team`
 
-Team dependencies are resolved transitively from `teams/<team>/team.json`. Installing `review-team` or `feature-team` also installs the shared `delivery-team` base files. Installing `assurance-team` installs `feature-team` and its `delivery-team` dependency. Installing `mission-team` installs only `delivery-team` plus `mission-team`.
+Team dependencies are resolved transitively from `teams/<team>/team.json`. Installing `review-team` or `feature-team` also installs the shared `delivery-team` base files. Installing `assurance-team` or `maintenance-team` installs `feature-team` and its `delivery-team` dependency. Installing `hotfix-team` installs `review-team` and its `delivery-team` dependency. Installing `mission-team` installs only `delivery-team` plus `mission-team`.
 
 ## Restart Required
 
@@ -237,6 +241,14 @@ OpenCode:
 agents/swarm-orchestrator.md
 agents/swarm-coder.md
 agents/swarm-cleaner.md
+agents/swarm-qa-procedure-writer.md
+agents/swarm-specifier.md
+agents/swarm-refactorer.md
+agents/swarm-architect.md
+agents/swarm-reviewer.md
+agents/swarm-hardener.md
+agents/swarm-security-reviewer.md
+agents/swarm-qa.md
 agents/swarm-mission-*.md
 agents/swarm-analyst.md
 agents/swarm-gherkin-writer.md
@@ -248,6 +260,8 @@ commands/swarm-delivery.md
 commands/swarm-review.md
 commands/swarm-feature.md
 commands/swarm-assurance.md
+commands/swarm-maintenance.md
+commands/swarm-hotfix.md
 commands/swarm-mission.md
 skills/swarm-pack/
 ```

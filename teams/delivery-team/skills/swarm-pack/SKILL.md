@@ -1,6 +1,6 @@
 ---
 name: swarm-pack
-description: Use when running Swarm Pack multi-agent workflows such as swarm-delivery, swarm-review, swarm-feature, swarm-assurance, or swarm-mission with small commits.
+description: Use when running Swarm Pack multi-agent workflows such as swarm-delivery, swarm-review, swarm-feature, swarm-assurance, swarm-maintenance, swarm-hotfix, or swarm-mission with small commits.
 ---
 
 # Swarm Pack Constitution

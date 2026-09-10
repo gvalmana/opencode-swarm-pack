@@ -27,6 +27,7 @@ Agents:
 - `swarm-orchestrator`: coordinates the workflow, delegates roles, validates handoffs, and owns role-based commits when commits are requested.
 - `swarm-coder`: implements behavior slices with focused tests or the smallest relevant verification.
 - `swarm-cleaner`: improves local quality without changing behavior.
+- `swarm-qa-procedure-writer`: shared role for executable-minded QA procedures when a workflow needs them.
 
 Use when:
 
@@ -151,12 +152,12 @@ Dependencies: installs `delivery-team` base automatically.
 
 Status: implemented.
 
-Summary: full quality workflow for larger or critical changes, adding hardening and independent QA.
+Summary: full quality workflow for larger or critical changes, adding hardening, security review, and independent QA.
 
 Flow:
 
 ```text
-specifier -> coder -> cleaner -> architect -> hardener -> qa -> final
+specifier -> coder -> cleaner -> architect -> hardener -> security-reviewer -> qa -> final
 ```
 
 Agents:
@@ -167,6 +168,7 @@ Agents:
 - `swarm-cleaner`: improves local quality without changing behavior.
 - `swarm-architect`: reviews structure, dependencies, information hiding, and testability.
 - `swarm-hardener`: covers edge cases, robustness gaps, and additional tests or fixes.
+- `swarm-security-reviewer`: reviews security risks without editing files.
 - `swarm-qa`: independently verifies the result through the normal user path or project entrypoint.
 
 Use when:
@@ -197,6 +199,80 @@ Example prompt:
 Dependencies: installs `feature-team` and `delivery-team` base automatically.
 
 Naming note: SwarmForge uses `hardender` and uppercase `QA` in the source workflow. Swarm Pack normalizes both to `swarm-hardener` and `swarm-qa`. See `docs/role-traceability.md`.
+
+## Maintenance Team
+
+Status: implemented.
+
+Summary: behavior-preserving maintenance and refactoring without new behavior.
+
+Flow:
+
+```text
+cleaner -> refactorer -> architect -> final
+```
+
+Agents:
+
+- `swarm-orchestrator`: coordinates the maintenance workflow and owns role-based commits when commits are requested.
+- `swarm-cleaner`: performs local cleanup without changing behavior.
+- `swarm-refactorer`: performs deeper behavior-preserving refactoring and coverage improvements.
+- `swarm-architect`: reviews structural changes and boundary risk.
+
+Use when:
+
+- Behavior must stay unchanged.
+- Local cleanup should be separated from deeper refactoring.
+- You want architectural review after maintenance work.
+
+Avoid when:
+
+- New behavior or product decisions are required.
+- The task is urgent enough to prefer the hotfix flow.
+
+Entrypoint:
+
+```text
+/swarm-maintenance <task>
+```
+
+Dependencies: installs `feature-team` and its transitive `delivery-team` base automatically.
+
+## Hotfix Team
+
+Status: implemented.
+
+Summary: minimal urgent fix loop with read-only adversarial review.
+
+Flow:
+
+```text
+coder -> reviewer -> final
+```
+
+Agents:
+
+- `swarm-orchestrator`: coordinates the hotfix workflow and owns role-based commits when commits are requested.
+- `swarm-coder`: implements the narrow fix.
+- `swarm-reviewer`: reviews the fix without editing files.
+
+Use when:
+
+- The defect is urgent and narrow.
+- You need review but not the full assurance workflow.
+
+Avoid when:
+
+- The fix requires unclear product decisions.
+- The change needs formal hardening, security review, or QA gates.
+
+Entrypoint:
+
+```text
+/swarm-hotfix <task>
+```
+
+Dependencies: installs `review-team` and its transitive `delivery-team` base automatically.
 
 ## Mission Team
 

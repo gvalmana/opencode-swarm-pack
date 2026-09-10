@@ -2,7 +2,7 @@
 
 Swarm Pack brings SwarmForge-style role workflows to AI coding tools using native target adapters. OpenCode, Codex, GitHub Copilot, and Claude Code are currently supported installation targets.
 
-Five teams ship today, from the smallest delivery loop to the full mission workflow:
+Seven teams ship today, from the smallest delivery loop to the full mission workflow:
 
 ```text
 delivery-team:  coder -> cleaner -> final
@@ -149,7 +149,12 @@ See `docs/teams.md` for target-independent agent responsibilities, team selectio
 - `docs/teams.md`
 - `docs/multi-target-support.md`
 - `docs/worktree-discipline.md`
-- `docs/future-teams.md`
+- `docs/phases-changelog.md`
+- `docs/roadmap.md`
+- `docs/adding-a-team.md`
+- `docs/adding-a-target.md`
+- `docs/permissions-mapping.md`
+- `docs/configuration.md`
 - `docs/troubleshooting.md`
 
 ## Implemented Teams
@@ -157,7 +162,9 @@ See `docs/teams.md` for target-independent agent responsibilities, team selectio
 - `delivery-team`: coder, cleaner.
 - `review-team`: coder, reviewer.
 - `feature-team`: specifier, coder, refactorer, architect.
-- `assurance-team`: specifier, coder, cleaner, architect, hardener, QA.
+- `assurance-team`: specifier, coder, cleaner, architect, hardener, security reviewer, QA.
+- `maintenance-team`: cleaner, refactorer, architect.
+- `hotfix-team`: coder, reviewer.
 - `mission-team`: mission leader with dedicated mission agents for analysis, acceptance, QA procedure, implementation, review, hardening, QA, senior implementation, and readiness gates.
 
 Mission installation depends on `delivery-team` for the shared skill and base orchestration assets, then installs its own mission-specific agents.

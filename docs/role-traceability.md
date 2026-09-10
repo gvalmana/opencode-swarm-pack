@@ -29,7 +29,9 @@ The adaptation rule for every role is:
 | `swarm-refactorer` | feature refactorer | implemented for feature-team |
 | `swarm-architect` | feature and assurance architecture roles | implemented and reusable |
 | `swarm-hardener` | assurance hardening role | implemented for assurance-team |
+| `swarm-security-reviewer` | OpenCode security review adaptation | implemented for assurance-team |
 | `swarm-qa` | assurance QA role | implemented for assurance-team |
+| `swarm-qa-procedure-writer` | source qa-procedure-writer | implemented and reusable |
 
 `swarm-orchestrator` is an OpenCode-specific role. SwarmForge uses shell scripts, tmux, and handoff daemons for orchestration; OpenCode needs a prompt-level orchestrator to coordinate subagents and commits.
 
@@ -40,7 +42,6 @@ The adaptation rule for every role is:
 | `swarm-mission-leader` | source mission leader | mission-team |
 | `swarm-analyst` | source analyst | mission-team |
 | `swarm-gherkin-writer` | source gherkin-writer | mission-team |
-| `swarm-qa-procedure-writer` | source qa-procedure-writer | mission-team |
 | `swarm-gherkin-reviewer` | source gherkin-reviewer | mission-team |
 | `swarm-qa-procedure-reviewer` | source qa-procedure-reviewer | mission-team |
 | `swarm-mission-implementer` | source implementer | mission-team |
@@ -68,7 +69,7 @@ SwarmForge source workflows use uppercase `QA`. Swarm Pack normalizes this to `s
 - **Coder**: keeps the acceptance pipeline discipline and the explicit "do not run mutation/CRAP/DRY" rule. OpenCode does not assume Babashka or Go-based Gherkin parsers; the role uses the project's existing test conventions when no pipeline exists.
 - **Cleaner**: keeps the CRAP-≤6, DRY, and mutation scan-count rules, the 100-mutation-sites-per-file split rule, and the "ignore QA suite" rule. OpenCode version makes CRAP/DRY/mutation conditional on the project having them.
 - **Refactorer**: same as cleaner plus property testing responsibility. Both share a common structure but differ in scope: refactorer is allowed to touch architecture-adjacent code, cleaner is restricted to local cleanup.
-- **Architect**: keeps the four review phases (UI/Core Separation, Dependency Rule, Information Hiding, Local Code Quality), the mutation worker limit (`--max-workers 8`), and the differential mutation rule. The "Refactorer handoffs" / `BATCH` / `TASK` shape is replaced by the orchestrator delegating one task at a time.
+- **Architect**: keeps the four review phases (UI/Core Separation, Dependency Rule, Information Hiding, Local Code Quality). Mutation hardening is delegated to `swarm-hardener`; architect uses mutation or acceptance-mutator reports only to guide structural fixes.
 - **Hardener**: keeps the mutation hardening discipline and the Gherkin mutation "no-op step" rule. In OpenCode this is conditional on the project having acceptance mutators.
 - **QA**: keeps the end-to-end-through-UI rule (no private API for QA), the QA-procedure-to-script conversion, and the "reproduce before fixing" rule. In OpenCode this becomes "exercise the change through the project's normal entrypoint or UI, not through a private test API".
 
@@ -91,6 +92,9 @@ HANDOFF
 role: <role>
 status: completed|blocked|failed
 task: <short-stable-task-name>
+worktree_path: <path-or-none>
+branch: <branch-or-none>
+base_sha: <sha-or-none>
 commit_needed: yes|no
 changed_files:
 verification:
@@ -99,4 +103,4 @@ summary:
 risks:
 ```
 
-The orchestrator owns `commit_needed` decisions and creates the commit. Role-specific fields (`decision`/`findings` for reviewer, `architecture_notes` for architect, `edge_cases_covered` for hardener, `qa_report` for QA) extend the block without replacing the base fields.
+The orchestrator owns commits; subagents report whether a role-owned commit is needed. Role-specific fields (`decision`/`findings` for reviewers, `architecture_notes` for architect, `edge_cases_covered` for hardener, `qa_report` for QA) extend the block without replacing the base fields.
