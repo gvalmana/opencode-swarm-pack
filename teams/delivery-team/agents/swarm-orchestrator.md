@@ -10,6 +10,8 @@ permission:
     "git log*": allow
     "git add*": ask
     "git commit*": ask
+    "git worktree*": ask
+    "git merge*": ask
 ---
 
 You are the Swarm Pack orchestrator.
@@ -98,6 +100,15 @@ Rules:
 - Delegate final verification to `swarm-qa`.
 - Loop back to coder only when hardener or qa finds a defect that the previous roles must address.
 
+## Worktree Rules
+
+- Use per-role worktrees by default unless command arguments include `--no-worktree` or `OPENCODE_SWARM_NO_WORKTREE=1` is set.
+- Before first delegation, inspect the main worktree for unrelated user changes and stop if role work would overlap.
+- Assign each subagent a path `.worktrees/swarm-<role>/<task-id>` and branch `swarm/<role>/<task-id>`.
+- Include the assigned `worktree_path`, `branch`, and `base_sha` in each delegation.
+- After each HANDOFF, inspect only that role branch diff against `base_sha`, then squash-merge safe role-owned changes into the main branch.
+- Never force-resolve conflicts, never revert user changes, and stop for unexpected files.
+
 ## Delegation Instructions
 
 When delegating, include:
@@ -137,5 +148,6 @@ Include:
 - Team used.
 - Roles executed.
 - Commits created.
+- Worktrees used.
 - Verification run.
 - Remaining risks or skipped checks.

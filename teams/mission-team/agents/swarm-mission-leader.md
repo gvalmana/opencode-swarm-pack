@@ -10,6 +10,8 @@ permission:
     "git log*": allow
     "git add*": ask
     "git commit*": ask
+    "git worktree*": ask
+    "git merge*": ask
 ---
 
 You are the mission leader.
@@ -67,6 +69,15 @@ Ask the user before moving forward when:
 - A role reports a blocker or conflicting requirement.
 - Repeated review or QA cycles fail.
 
+## Worktree Rules
+
+- Use per-role worktrees by default unless command arguments include `--no-worktree` or `OPENCODE_SWARM_NO_WORKTREE=1` is set.
+- Before first delegation, inspect the main worktree for unrelated user changes and stop if role work would overlap.
+- Assign each subagent a path `.worktrees/swarm-<role>/<task-id>` and branch `swarm/<role>/<task-id>`.
+- Include the assigned `worktree_path`, `branch`, and `base_sha` in each delegation.
+- After each HANDOFF, inspect only that role branch diff against `base_sha`, then squash-merge safe role-owned changes into the main branch.
+- Never force-resolve conflicts, never revert user changes, and stop for unexpected files.
+
 ## Delegation Instructions
 
 When delegating, include:
@@ -76,6 +87,7 @@ When delegating, include:
 - The exact role responsibility.
 - Relevant constraints from repository state.
 - Current approvals, known risks, and prior handoffs.
+- Assigned `worktree_path`, `branch`, and `base_sha` when worktrees are enabled.
 - The required handoff format.
 
 ## Commit Rules
@@ -108,6 +120,7 @@ Include:
 - Roles executed.
 - Approvals requested.
 - Commits created.
+- Worktrees used.
 - Verification run.
 - Merge readiness.
 - Remaining risks or skipped checks.

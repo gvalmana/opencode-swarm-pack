@@ -13,6 +13,12 @@ Team flow:
 specifier -> coder -> refactorer -> architect -> final
 ```
 
+Options:
+
+- Worktrees are enabled by default.
+- Pass `--no-worktree` in `$ARGUMENTS` to run roles in the main worktree for this session.
+- Set `OPENCODE_SWARM_NO_WORKTREE=1` to opt out through the environment.
+
 Rules:
 
 - Use the `swarm-pack` skill.

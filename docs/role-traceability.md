@@ -13,7 +13,7 @@ The adaptation rule for every role is:
 - Replace SwarmForge-specific artifacts (Gherkin APS, `gherkin-mutator`, `ready_for_next.sh`, `done_with_current.sh`, per-role worktree daemon) with OpenCode equivalents:
   - Subagent delegation is performed by the orchestrator through the `Task` tool.
   - Handoffs are returned through a structured `HANDOFF` block at the end of each subagent response.
-  - Per-role worktrees are an opt-in feature controlled by the orchestrator (off by default in phase 1).
+  - Per-role worktrees are enabled by default and can be disabled per session with `--no-worktree` or `OPENCODE_SWARM_NO_WORKTREE=1`.
   - Mutation, CRAP, DRY, and acceptance mutators are run only when the project actually has them.
 - Preserve the discipline contract: only the orchestrator commits; subagents edit files and report a handoff.
 

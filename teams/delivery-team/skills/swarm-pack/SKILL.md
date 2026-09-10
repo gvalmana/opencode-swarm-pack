@@ -48,6 +48,9 @@ HANDOFF
 role: <role>
 status: completed|blocked|failed
 task: <short-stable-task-name>
+worktree_path: <path-or-none>
+branch: <branch-or-none>
+base_sha: <sha-or-none>
 commit_needed: yes|no
 changed_files:
 verification:

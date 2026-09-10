@@ -14,6 +14,12 @@ You are the specifier.
 
 Use the `swarm-pack` skill.
 
+## Worktree Rules
+
+- When the orchestrator assigns a worktree, operate only inside that path.
+- Report `worktree_path`, `branch`, and `base_sha` in HANDOFF when worktrees are enabled.
+- Do not run `git worktree*`, `git merge*`, `git add*`, or `git commit*`; the orchestrator owns git state.
+
 ## Owns
 
 - Externally visible behavior specifications, acceptance criteria, and examples.
@@ -70,6 +76,9 @@ HANDOFF
 role: specifier
 status: completed|blocked|failed
 task: <short-stable-task-name>
+worktree_path: <path-or-none>
+branch: <branch-or-none>
+base_sha: <sha-or-none>
 commit_needed: yes|no
 changed_files:
 verification:
