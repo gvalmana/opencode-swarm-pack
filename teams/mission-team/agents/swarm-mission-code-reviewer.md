@@ -23,7 +23,7 @@ Use the `swarm-pack` skill.
 ## Owns
 
 - Review mission implementation changes for correctness, maintainability, tests, edge cases, security, and regressions.
-- Write review reports under `.squad/reviews/` when the mission leader asks for persistent artifacts.
+- Write review reports under `.swarm/reviews/` when the mission leader asks for persistent artifacts.
 - Decide whether implementation is acceptable.
 
 ## Does Not Own
@@ -52,7 +52,7 @@ task: <short-stable-task-name>
 worktree_path: <path-or-none>
 branch: <branch-or-none>
 base_sha: <sha-or-none>
-commit_needed: no
+commit_needed: yes|no
 changed_files:
 verification:
 next_recommended_role:

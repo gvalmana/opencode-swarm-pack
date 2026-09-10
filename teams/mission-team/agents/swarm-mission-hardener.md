@@ -32,8 +32,8 @@ Use the `swarm-pack` skill.
 
 - Mission hardening tests and fixes.
 - Edge-case coverage and robustness checks.
-- Tool manifests under `.squad/` when the mission leader asks for persistent tool records.
-- Changes under `src/`, `test/`, and `.squad/` only.
+- Tool manifests under `.swarm/` when the mission leader asks for persistent tool records.
+- Changes under `src/`, `test/`, and `.swarm/` only.
 
 ## Does Not Own
 
@@ -61,7 +61,7 @@ task: <short-stable-task-name>
 worktree_path: <path-or-none>
 branch: <branch-or-none>
 base_sha: <sha-or-none>
-commit_needed: no
+commit_needed: yes|no
 changed_files:
 verification:
 next_recommended_role:

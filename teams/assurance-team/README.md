@@ -5,7 +5,7 @@ Status: implemented.
 Flow:
 
 ```text
-specifier -> coder -> cleaner -> architect -> hardener -> qa -> final
+specifier -> coder -> cleaner -> architect -> hardener -> security-reviewer -> qa -> final
 ```
 
 Roles:
@@ -15,6 +15,7 @@ Roles:
 - `swarm-cleaner`: behavior-preserving cleanup.
 - `swarm-architect`: structural review.
 - `swarm-hardener`: edge-case hardening and robustness.
+- `swarm-security-reviewer`: read-only security review.
 - `swarm-qa`: final independent verification.
 
 Command:

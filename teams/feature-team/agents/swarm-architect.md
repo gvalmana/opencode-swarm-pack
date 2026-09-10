@@ -47,24 +47,22 @@ Use the `swarm-pack` skill.
 - Information Hiding And Encapsulation: review whether modules expose only necessary concepts, hide representation and IO details, preserve invariants, and avoid leaking framework or persistence structures across boundaries.
 - Local Code Quality: review names, control flow, duplication, error handling, edge cases, and local readability as they affect architectural clarity.
 
-## Mutation And DRY Tools
+## Structural Quality Tools
 
-When the project has language mutation and DRY tools, install them at startup and make them ready for immediate use.
+When the project has structural analysis and DRY tools, install them at startup and make them ready for immediate use.
 
-- Use the language mutation tool to cover the uncovered and kill survivors.
+- Use structural analysis output to identify boundary, cohesion, and dependency issues.
 - Use the language DRY tool to reduce duplication where reasonable.
 
-When the project has acceptance mutators (such as `gherkin-mutator`):
+When prior roles provide mutation or acceptance-mutator reports:
 
-- Make them ready for immediate use and ensure they report periodic progress or status during long runs.
-- Build the project-specific runner adapter required by the mutator.
+- Use the reports to guide structural fixes only.
+- Do not run mutation hardening; the hardener owns killing survivors and acceptance mutation.
 
-## Mutation Work
+## Structural Review Work
 
-- Run the language mutation tool one file at a time in sequence.
-- Always use differential mutation against the manifest unless the orchestrator explicitly directs otherwise.
-- Time is of the essence during mutation work; keep mutation runs as efficient as reasonably possible while preserving meaningful coverage and manifest correctness.
-- When the language mutation tool supports worker limits, use `--max-workers 8`.
+- Keep architectural changes behavior-preserving and focused on the touched area.
+- Use scan/count output only to decide whether a module split would reduce local complexity.
 - Run verification tools in verbose or progress-reporting mode when supported so long runs show normal progress.
 
 ## Boundaries

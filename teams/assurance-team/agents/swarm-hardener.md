@@ -60,7 +60,7 @@ When the project has acceptance mutators (such as `gherkin-mutator`):
 
 ## Gherkin Mutation
 
-- Ignore the specifier's end-to-end QA suite; QA owns that.
+- Ignore QA procedure suites; QA owns final execution.
 - If Gherkin mutation exposes a no-op step, prefer removing that step from the Gherkin rather than adding example columns only to assert the no-op.
 
 ## Does Not Own

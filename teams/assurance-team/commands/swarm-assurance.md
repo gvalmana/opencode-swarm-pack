@@ -10,7 +10,7 @@ $ARGUMENTS
 Team flow:
 
 ```text
-specifier -> coder -> cleaner -> architect -> hardener -> qa -> final
+specifier -> coder -> cleaner -> architect -> hardener -> security-reviewer -> qa -> final
 ```
 
 Options:
@@ -33,7 +33,9 @@ Rules:
 - Commit safe architect-owned changes when there are any.
 - Delegate edge-case hardening to `swarm-hardener`.
 - Commit safe hardener-owned changes when there are any.
+- Delegate read-only security review to `swarm-security-reviewer`.
+- Loop back to coder or hardener when security review returns `decision: changes-requested`.
 - Delegate final independent verification to `swarm-qa`.
-- Loop back to coder only when hardener or qa finds a defect that the previous roles must address.
+- Loop back to coder only when hardener, security-reviewer, or qa finds a defect that the previous roles must address.
 - Stop on blockers, repeated failed iterations, unexpected files, ambiguous scope, or unsafe git state.
 - Final response must summarize roles, commits, verification, and risks.

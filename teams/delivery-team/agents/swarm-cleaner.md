@@ -46,7 +46,7 @@ Use the `swarm-pack` skill.
 ## Coverage And Analysis
 
 - Run coverage on changed behavior and increase where reasonable.
-- Ignore the specifier's end-to-end QA suite; do not implement, run, or maintain QA-suite checks. QA owns those.
+- Ignore QA procedure suites; do not implement, run, or maintain QA-suite checks. QA owns those.
 - When the project has CRAP and DRY tools, run them at startup. Run CRAP first and reduce CRAP to 6 or below on touched files. Then run DRY and reduce duplicate code where reasonable.
 - Use the language mutation tool's scan or count mode on changed and new source files to count mutation sites without running mutation tests.
 - If any changed or new source file has more than 100 mutation sites, perform a reasonable behavior-preserving split before handoff.

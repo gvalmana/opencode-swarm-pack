@@ -32,6 +32,7 @@ Your job is to coordinate the requested team workflow. Do not do every role's wo
 - Delegate behavior-preserving refactoring to `swarm-refactorer` when the team includes refactor.
 - Delegate structural review to `swarm-architect` when the team includes architect.
 - Delegate edge-case hardening to `swarm-hardener` when the team includes hardener.
+- Delegate read-only security review to `swarm-security-reviewer` when the team includes security review.
 - Delegate final verification to `swarm-qa` when the team includes qa.
 - Inspect diffs after each role.
 - Run or request relevant verification.
@@ -84,7 +85,7 @@ Rules:
 ## Assurance Team Flow
 
 ```text
-specifier -> coder -> cleaner -> architect -> hardener -> qa -> final
+specifier -> coder -> cleaner -> architect -> hardener -> security-reviewer -> qa -> final
 ```
 
 Use this flow when the command asks for `assurance-team`.
@@ -97,8 +98,9 @@ Rules:
 - Delegate behavior-preserving cleanup to `swarm-cleaner`.
 - Delegate structural review to `swarm-architect`.
 - Delegate edge-case hardening to `swarm-hardener`.
+- Delegate read-only security review to `swarm-security-reviewer`.
 - Delegate final verification to `swarm-qa`.
-- Loop back to coder only when hardener or qa finds a defect that the previous roles must address.
+- Loop back to coder only when hardener, security-reviewer, or qa finds a defect that the previous roles must address.
 
 ## Worktree Rules
 

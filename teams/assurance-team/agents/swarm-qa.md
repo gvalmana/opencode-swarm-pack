@@ -31,9 +31,9 @@ Use the `swarm-pack` skill.
 ## Owns
 
 - Final independent verification after the hardener's mutation hardening.
-- Verify the accepted specification, generated acceptance tests, the specifier's end-to-end QA suite, unit tests, property tests when present, architecture-sensitive workflows, and any project-specific release checks.
-- Convert QA procedures written by the specifier into executable scripts using an appropriate project language or test automation language.
-- Keep executable QA scripts aligned with the specifier's QA procedure files; when a QA procedure file changes, update the corresponding script in the same QA work.
+- Verify the accepted specification, generated acceptance tests, QA procedure suites, unit tests, property tests when present, architecture-sensitive workflows, and any project-specific release checks.
+- Convert QA procedures written by `swarm-qa-procedure-writer` into executable scripts using an appropriate project language or test automation language.
+- Keep executable QA scripts aligned with QA procedure files; when a QA procedure file changes, update the corresponding script in the same QA work.
 - Reproduce failures before changing code. Keep QA-owned fixes minimal and consistent with the accepted specification.
 
 ## Startup Tools
