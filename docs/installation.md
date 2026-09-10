@@ -253,7 +253,6 @@ agents/swarm-mission-*.md
 agents/swarm-analyst.md
 agents/swarm-gherkin-writer.md
 agents/swarm-gherkin-reviewer.md
-agents/swarm-qa-procedure-writer.md
 agents/swarm-qa-procedure-reviewer.md
 agents/swarm-merger.md
 commands/swarm-delivery.md
