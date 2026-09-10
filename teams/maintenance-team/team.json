@@ -1,0 +1,6 @@
+{
+  "name": "maintenance-team",
+  "summary": "Behavior-preserving maintenance and refactoring without new behavior.",
+  "dependencies": ["feature-team"],
+  "workflow": "swarm-cleaner -> swarm-refactorer -> swarm-architect -> final"
+}

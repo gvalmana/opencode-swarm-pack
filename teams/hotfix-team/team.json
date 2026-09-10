@@ -1,0 +1,6 @@
+{
+  "name": "hotfix-team",
+  "summary": "Minimal bug-fix loop with adversarial review and low ceremony.",
+  "dependencies": ["review-team"],
+  "workflow": "swarm-coder -> swarm-reviewer -> final"
+}

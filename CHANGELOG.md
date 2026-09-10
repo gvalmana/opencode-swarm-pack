@@ -12,3 +12,5 @@
 - Add `swarm-security-reviewer` to the assurance workflow.
 - Promote `swarm-qa-procedure-writer` into the shared base role set.
 - Rename mission persistent artifact guidance from `.squad/` to `.swarm/`.
+- Add `maintenance-team` for behavior-preserving refactoring.
+- Add `hotfix-team` for focused urgent fixes with review.

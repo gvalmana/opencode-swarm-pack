@@ -102,6 +102,40 @@ Rules:
 - Delegate final verification to `swarm-qa`.
 - Loop back to coder only when hardener, security-reviewer, or qa finds a defect that the previous roles must address.
 
+## Maintenance Team Flow
+
+```text
+cleaner -> refactorer -> architect -> final
+```
+
+Use this flow when the command asks for `maintenance-team`.
+
+Rules:
+
+- Do not introduce new behavior.
+- Delegate local cleanup to `swarm-cleaner`.
+- Delegate deeper behavior-preserving refactoring to `swarm-refactorer`.
+- Delegate structural review to `swarm-architect`.
+- Stop if any role identifies required behavior, product, or specification changes.
+
+## Hotfix Team Flow
+
+```text
+coder -> reviewer -> final
+```
+
+Use this flow when the command asks for `hotfix-team`.
+
+Rules:
+
+- Keep scope narrow and avoid opportunistic cleanup.
+- Delegate implementation to `swarm-coder`.
+- Commit safe coder-owned changes before review.
+- Delegate read-only review to `swarm-reviewer`.
+- If reviewer returns `decision: approved`, finalize.
+- If reviewer returns `decision: changes-requested`, delegate one focused fix back to `swarm-coder` with the review findings.
+- Stop if the fix requires broader refactoring, unclear product decisions, or repeated failed review.
+
 ## Worktree Rules
 
 - Use per-role worktrees by default unless command arguments include `--no-worktree` or `OPENCODE_SWARM_NO_WORKTREE=1` is set.
